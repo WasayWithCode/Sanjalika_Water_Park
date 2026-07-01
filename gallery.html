@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse the Sanjalika Water Park photo gallery. Masonry grid with lightbox, category filters, and stunning aquatic moments.">
+    <title>Gallery — Sanjalika Water Park</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+    <div class="page-loader" aria-hidden="true"><div class="loader-ring"></div><p class="loader-brand">Sanja<span>lika</span></p></div>
+    <div class="page-transition" aria-hidden="true"></div>
+
+    <nav class="navbar navbar-expand-lg premium-nav fixed-top nav-scrolled" aria-label="Main navigation">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><span class="brand-mark"><i class="fas fa-water"></i></span> Sanjalika</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse mobile-menu" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="park-info.html">Park Info</a></li>
+                    <li class="nav-item"><a class="nav-link" href="rides.html">Rides &amp; Slides</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="food-zone.html">Food Zone</a></li>
+                    <li class="nav-item"><a class="nav-link" href="facilities.html">Facilities</a></li>
+                    <li class="nav-item"><a class="nav-link" href="booking.html">Booking</a></li>
+                    <li class="nav-item"><a class="nav-link" href="downloads.html">Downloads</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+                    <li class="nav-item ms-lg-2"><a class="btn btn-premium btn-primary-premium btn-nav-cta btn-ripple" href="booking.html"><i class="fas fa-ticket-alt"></i> Book Tickets</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <div class="page-header-bg"><img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=1920&q=80" alt=""></div>
+        <div class="page-header-overlay"></div>
+        <div class="page-header-content container">
+            <nav class="breadcrumb-nav"><a href="index.html">Home</a> <span>/</span> <span class="active">Gallery</span></nav>
+            <h1 class="section-title">Photo Gallery</h1>
+            <p class="section-subtitle mb-0">Moments of joy, thrill, and aquatic beauty.</p>
+        </div>
+    </header>
+
+    <section class="section-padding section-dark">
+        <div class="container">
+            <div class="filter-tabs">
+                <button class="filter-btn gallery-filter active" data-filter="all">All</button>
+                <button class="filter-btn gallery-filter" data-filter="rides">Rides</button>
+                <button class="filter-btn gallery-filter" data-filter="pools">Pools</button>
+                <button class="filter-btn gallery-filter" data-filter="family">Family</button>
+                <button class="filter-btn gallery-filter" data-filter="events">Events</button>
+            </div>
+
+            <div class="gallery-grid" data-aos="fade-up">
+                <div class="gallery-item" data-category="pools">
+                    <img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c8d41?w=600&q=80" alt="Wave pool at sunset" loading="lazy">
+                    <div class="gallery-overlay"><span>Wave Pool Sunset</span></div>
+                </div>
+                <div class="gallery-item" data-category="rides">
+                    <img src="https://images.unsplash.com/photo-1505118380757-91f5ebf2fe10?w=600&q=80" alt="Water slides aerial view" loading="lazy" style="height:320px;object-fit:cover">
+                    <div class="gallery-overlay"><span>Slide Tower</span></div>
+                </div>
+                <div class="gallery-item" data-category="family">
+                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&q=80" alt="Family enjoying the beach" loading="lazy">
+                    <div class="gallery-overlay"><span>Family Fun</span></div>
+                </div>
+                <div class="gallery-item" data-category="rides">
+                    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80" alt="Guests on water slide" loading="lazy" style="height:280px;object-fit:cover">
+                    <div class="gallery-overlay"><span>Speed Slide</span></div>
+                </div>
+                <div class="gallery-item" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=600&q=80" alt="Night splash event" loading="lazy">
+                    <div class="gallery-overlay"><span>Night Splash</span></div>
+                </div>
+                <div class="gallery-item" data-category="pools">
+                    <img src="https://images.unsplash.com/photo-1575429198097-0414ecaf0f8f?w=600&q=80" alt="Lazy river" loading="lazy" style="height:350px;object-fit:cover">
+                    <div class="gallery-overlay"><span>Lazy River</span></div>
+                </div>
+                <div class="gallery-item" data-category="family">
+                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" alt="Kids splash zone" loading="lazy">
+                    <div class="gallery-overlay"><span>Kids Kingdom</span></div>
+                </div>
+                <div class="gallery-item" data-category="rides">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" alt="Resort pool area" loading="lazy">
+                    <div class="gallery-overlay"><span>Park Overview</span></div>
+                </div>
+                <div class="gallery-item" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Beachfront dining event" loading="lazy" style="height:300px;object-fit:cover">
+                    <div class="gallery-overlay"><span>Dining Experience</span></div>
+                </div>
+                <div class="gallery-item" data-category="pools">
+                    <img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c8d41?w=600&q=80" alt="Crystal clear pool water" loading="lazy">
+                    <div class="gallery-overlay"><span>Crystal Waters</span></div>
+                </div>
+                <div class="gallery-item" data-category="family">
+                    <img src="https://images.unsplash.com/photo-1505118380757-91f5ebf2fe10?w=600&q=80" alt="Group on raft ride" loading="lazy" style="height:260px;object-fit:cover">
+                    <div class="gallery-overlay"><span>Raft Adventure</span></div>
+                </div>
+                <div class="gallery-item" data-category="events">
+                    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=600&q=80" alt="Summer festival" loading="lazy">
+                    <div class="gallery-overlay"><span>Summer Festival</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-wave" aria-hidden="true"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#061220" d="M0,20 C240,60 480,0 720,30 C960,60 1200,10 1440,40 L1440,0 L0,0 Z"/></svg></div>
+        <div class="footer-main"><div class="container"><div class="row g-4">
+            <div class="col-lg-4"><div class="footer-brand"><span class="brand-mark"><i class="fas fa-water"></i></span> Sanjalika</div><p class="footer-desc">Sri Lanka's premier luxury water park.</p></div>
+            <div class="col-6 col-lg-2"><h5 class="footer-title">Quick Links</h5><ul class="footer-links"><li><a href="rides.html">Rides</a></li><li><a href="booking.html">Booking</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+            <div class="col-lg-4"><div class="footer-map"><iframe src="https://maps.google.com/maps?q=Panadura+Sri+Lanka&z=13&output=embed" title="Map" loading="lazy"></iframe></div></div>
+        </div></div></div>
+        <div class="footer-bottom"><div class="container"><p>&copy; 2026 Sanjalika Water Park. All rights reserved.</p></div></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
