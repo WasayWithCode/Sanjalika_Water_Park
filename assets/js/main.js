@@ -1,6 +1,6 @@
 /**
  * Sanjalika Water Park — Main JavaScript
- * ES6 | AOS | GSAP | Interactions
+ * ES6 | AOS | GSAP | Premium Interactions
  */
 
 'use strict';
@@ -14,9 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initGallery();
   initRideFilter();
   initBooking();
+  initDownloads();
   initNewsletter();
   initPageTransitions();
   initHeroVideo();
+  initCardTilt();
   initAOS();
   initGSAP();
 });
@@ -26,17 +28,13 @@ function initPageLoader() {
   const loader = document.querySelector('.page-loader');
   if (!loader) return;
 
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      loader.classList.add('hidden');
-      document.body.classList.add('page-loaded');
-    }, 800);
-  });
-
-  setTimeout(() => {
+  const hide = () => {
     loader.classList.add('hidden');
     document.body.classList.add('page-loaded');
-  }, 3000);
+  };
+
+  window.addEventListener('load', () => setTimeout(hide, 600));
+  setTimeout(hide, 3000);
 }
 
 /* ── Navbar Scroll ── */
@@ -62,9 +60,8 @@ function initNavbar() {
   window.addEventListener('scroll', handleScroll, { passive: true });
   handleScroll();
 
-  const toggler = nav.querySelector('.navbar-toggler');
   const collapse = nav.querySelector('.navbar-collapse');
-  if (toggler && collapse) {
+  if (collapse) {
     collapse.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         if (window.innerWidth < 992) {
@@ -76,21 +73,39 @@ function initNavbar() {
   }
 }
 
-/* ── Hero Video Fallback ── */
+/* ── Hero Video ── */
 function initHeroVideo() {
   const video = document.querySelector('.hero-video-wrap video');
   if (!video) return;
 
-  const fallbackSrc = 'https://cdn.coverr.co/videos/coverr-splashing-water-in-a-swimming-pool-4876/1080p.mp4';
+  const assets = window.SANJALIKA_ASSETS;
+  const primary = assets?.videos?.primary || 'assets/videos/hero_background.mp4';
+  const fallback = assets?.videos?.fallback || 'assets/videos/hero_background2.mp4';
+  const poster = assets?.heroPoster || 'assets/images/Rides_&_Slides.jpg';
+
+  video.setAttribute('poster', poster);
+  let source = video.querySelector('source');
+  if (!source) {
+    source = document.createElement('source');
+    source.type = 'video/mp4';
+    video.appendChild(source);
+  }
+  source.src = primary;
+
+  const fallbackImg = document.querySelector('.hero-fallback-img');
+  if (fallbackImg) fallbackImg.src = poster;
+
+  video.load();
 
   video.addEventListener('error', () => {
-    const source = video.querySelector('source');
-    if (source && !source.dataset.fallbackUsed) {
-      source.src = fallbackSrc;
-      source.dataset.fallbackUsed = 'true';
-      video.load();
-      video.play().catch(() => {});
-    }
+    if (source.src.includes('hero_background2')) return;
+    source.src = fallback;
+    video.load();
+    video.play().catch(() => {});
+  });
+
+  video.addEventListener('loadeddata', () => {
+    video.classList.add('video-loaded');
   });
 
   const playPromise = video.play();
@@ -98,6 +113,14 @@ function initHeroVideo() {
     playPromise.catch(() => {
       document.addEventListener('click', () => video.play(), { once: true });
     });
+  }
+
+  const subtitle = document.querySelector('.hero-subtitle-animated');
+  if (subtitle && typeof gsap !== 'undefined') {
+    gsap.fromTo(subtitle,
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 1.2, delay: 1.2, ease: 'power2.out' }
+    );
   }
 }
 
@@ -114,6 +137,23 @@ function initRipple() {
       ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
       this.appendChild(ripple);
       setTimeout(() => ripple.remove(), 600);
+    });
+  });
+}
+
+/* ── Card Tilt ── */
+function initCardTilt() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  document.querySelectorAll('[data-tilt]').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
     });
   });
 }
@@ -157,9 +197,7 @@ function initFAQ() {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
       const isActive = item.classList.contains('active');
-
       document.querySelectorAll('.faq-item.active').forEach(i => i.classList.remove('active'));
-
       if (!isActive) item.classList.add('active');
     });
   });
@@ -183,7 +221,9 @@ function initGallery() {
         const cat = item.dataset.category;
         const show = filter === 'all' || cat === filter;
         item.style.display = show ? '' : 'none';
-        item.style.opacity = show ? '1' : '0';
+        if (show && typeof gsap !== 'undefined') {
+          gsap.fromTo(item, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.4 });
+        }
       });
     });
   });
@@ -220,12 +260,8 @@ function initGallery() {
   };
 
   closeBtn.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 }
 
 /* ── Ride Filter ── */
@@ -246,7 +282,6 @@ function initRideFilter() {
         const type = card.dataset.rideType;
         const show = filter === 'all' || type === filter;
         card.style.display = show ? '' : 'none';
-
         if (show && typeof gsap !== 'undefined') {
           gsap.fromTo(card, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
         }
@@ -255,59 +290,454 @@ function initRideFilter() {
   });
 }
 
-/* ── Booking Form ── */
+/* ── Toast Notifications ── */
+function showToast(message, type = 'success') {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'toast-container';
+    container.setAttribute('aria-live', 'polite');
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = `toast-notification toast-${type}`;
+  toast.innerHTML = `
+    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+    <span>${message}</span>
+  `;
+  container.appendChild(toast);
+
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 4000);
+}
+
+/* ── Validation Helpers ── */
+const Validators = {
+  fullName(value) {
+    const v = value.trim();
+    if (v.length < 3) return { valid: false, msg: 'Name must be at least 3 characters' };
+    if (/\d/.test(v)) return { valid: false, msg: 'Name cannot contain numbers' };
+    if (!/^[a-zA-Z\s'.-]+$/.test(v)) return { valid: false, msg: 'Name contains invalid characters' };
+    return { valid: true };
+  },
+  email(value) {
+    const v = value.trim();
+    const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+    if (!regex.test(v)) return { valid: false, msg: 'Enter a valid email address' };
+    if (v.endsWith('.') || v.includes('..')) return { valid: false, msg: 'Enter a valid email address' };
+    return { valid: true };
+  },
+  phone(value) {
+    const v = value.trim();
+    const pkRegex = /^(\+92|0)?3[0-9]{2}[\s-]?[0-9]{7}$/;
+    const intlRegex = /^\+?[1-9]\d{7,14}$/;
+    const cleaned = v.replace(/[\s()-]/g, '');
+    if (pkRegex.test(cleaned) || intlRegex.test(cleaned)) return { valid: true };
+    return { valid: false, msg: 'Enter a valid phone (PK: +92 3XX XXXXXXX or international)' };
+  },
+  visitDate(value) {
+    if (!value) return { valid: false, msg: 'Please select a visit date' };
+    const selected = new Date(value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    selected.setHours(0, 0, 0, 0);
+    if (selected < today) return { valid: false, msg: 'Cannot select a past date' };
+    return { valid: true };
+  },
+  quantity(value) {
+    const n = parseInt(value, 10);
+    if (isNaN(n) || n < 1) return { valid: false, msg: 'Minimum 1 visitor required' };
+    if (n > 20) return { valid: false, msg: 'Maximum 20 visitors allowed' };
+    return { valid: true };
+  },
+  message(value) {
+    const v = value.trim();
+    if (!v) return { valid: true };
+    if (v.length < 10) return { valid: false, msg: 'Message must be at least 10 characters' };
+    if (v.length > 500) return { valid: false, msg: 'Message cannot exceed 500 characters' };
+    return { valid: true };
+  },
+  terms(checked) {
+    if (!checked) return { valid: false, msg: 'You must accept the terms and conditions' };
+    return { valid: true };
+  }
+};
+
+function setFieldState(input, result, errorEl) {
+  const wrap = input.closest('.input-wrap') || input.closest('.form-group');
+  const status = wrap?.querySelector('.field-status');
+
+  if (result.valid) {
+    input.classList.remove('error', 'shake');
+    input.classList.add('success');
+    if (errorEl) { errorEl.textContent = ''; errorEl.classList.remove('show'); }
+    if (status) {
+      status.innerHTML = '<i class="fas fa-check-circle"></i>';
+      status.className = 'field-status valid';
+    }
+  } else {
+    input.classList.remove('success');
+    input.classList.add('error');
+    if (errorEl) { errorEl.textContent = result.msg; errorEl.classList.add('show'); }
+    if (status) {
+      status.innerHTML = '<i class="fas fa-times-circle"></i>';
+      status.className = 'field-status invalid';
+    }
+  }
+  return result.valid;
+}
+
+function shakeField(input) {
+  input.classList.add('shake');
+  setTimeout(() => input.classList.remove('shake'), 500);
+}
+
+/* ── Premium Booking ── */
 function initBooking() {
   const form = document.getElementById('bookingForm');
   if (!form) return;
 
-  const prices = { adult: 45, child: 28, senior: 35, family: 120 };
+  const prices = { adult: 45, child: 28, family: 120, vip: 89 };
   let selectedTicket = 'adult';
   let selectedDate = null;
+  let currentStep = 1;
+  const totalSteps = 4;
 
-  const ticketOptions = form.querySelectorAll('.ticket-option');
-  ticketOptions.forEach(opt => {
-    opt.addEventListener('click', () => {
-      ticketOptions.forEach(o => o.classList.remove('selected'));
-      opt.classList.add('selected');
-      selectedTicket = opt.dataset.ticket;
+  const ticketCards = form.querySelectorAll('.ticket-card');
+  const ticketTypeInput = form.querySelector('#ticketType');
+  const qtyInput = form.querySelector('#ticketQty');
+  const visitDateInput = form.querySelector('#visitDate');
+  const messageInput = form.querySelector('#message');
+  const charCount = form.querySelector('#charCount');
+  const btnPrev = form.querySelector('#btnPrev');
+  const btnNext = form.querySelector('#btnNext');
+  const btnSubmit = form.querySelector('#btnSubmit');
+  const progressSteps = document.querySelectorAll('.progress-step');
+
+  const todayStr = () => {
+    const d = new Date();
+    return d.toISOString().split('T')[0];
+  };
+
+  if (visitDateInput) {
+    visitDateInput.min = todayStr();
+    visitDateInput.addEventListener('change', () => {
+      selectedDate = visitDateInput.value;
+      syncCalendarSelection(selectedDate);
       updateSummary();
+      validateField('visitDate');
+    });
+  }
+
+  ticketCards.forEach(card => {
+    card.addEventListener('click', () => {
+      ticketCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedTicket = card.dataset.ticket;
+      if (ticketTypeInput) ticketTypeInput.value = selectedTicket;
+      updateSummary();
+      updateProgress();
     });
   });
 
-  if (ticketOptions.length) ticketOptions[0].classList.add('selected');
-
-  const calendar = form.querySelector('.calendar-grid');
-  if (calendar) buildCalendar(calendar, (date) => {
-    selectedDate = date;
+  form.querySelector('#qtyMinus')?.addEventListener('click', () => {
+    const val = Math.max(1, parseInt(qtyInput.value, 10) - 1);
+    qtyInput.value = val;
     updateSummary();
+    validateField('ticketQty');
   });
 
-  const qtyInput = form.querySelector('#ticketQty');
-  if (qtyInput) qtyInput.addEventListener('input', updateSummary);
+  form.querySelector('#qtyPlus')?.addEventListener('click', () => {
+    const val = Math.min(20, parseInt(qtyInput.value, 10) + 1);
+    qtyInput.value = val;
+    updateSummary();
+    validateField('ticketQty');
+  });
+
+  qtyInput?.addEventListener('input', () => {
+    let val = parseInt(qtyInput.value, 10);
+    if (isNaN(val)) val = 1;
+    qtyInput.value = Math.min(20, Math.max(1, val));
+    updateSummary();
+    validateField('ticketQty');
+  });
+
+  messageInput?.addEventListener('input', () => {
+    if (charCount) charCount.textContent = messageInput.value.length;
+    validateField('message');
+  });
+
+  ['fullName', 'email', 'phone'].forEach(id => {
+    const input = form.querySelector(`#${id}`);
+    if (!input) return;
+    input.addEventListener('input', () => validateField(id));
+    input.addEventListener('blur', () => validateField(id));
+  });
+
+  form.querySelector('#terms')?.addEventListener('change', () => validateField('terms'));
+
+  function validateField(fieldId, shake = false) {
+    let result = { valid: true };
+    const errorEl = form.querySelector(`#${fieldId}Error`);
+
+    switch (fieldId) {
+      case 'fullName':
+        result = Validators.fullName(form.querySelector('#fullName').value);
+        return setFieldState(form.querySelector('#fullName'), result, errorEl);
+      case 'email':
+        result = Validators.email(form.querySelector('#email').value);
+        return setFieldState(form.querySelector('#email'), result, errorEl);
+      case 'phone':
+        result = Validators.phone(form.querySelector('#phone').value);
+        return setFieldState(form.querySelector('#phone'), result, errorEl);
+      case 'visitDate':
+        result = Validators.visitDate(visitDateInput?.value || selectedDate);
+        if (!result.valid && visitDateInput) {
+          visitDateInput.classList.add('error');
+          if (errorEl) { errorEl.textContent = result.msg; errorEl.classList.add('show'); }
+        } else if (visitDateInput) {
+          visitDateInput.classList.remove('error');
+          visitDateInput.classList.add('success');
+          if (errorEl) errorEl.classList.remove('show');
+        }
+        return result.valid;
+      case 'ticketQty':
+        result = Validators.quantity(qtyInput.value);
+        if (!result.valid) {
+          qtyInput.classList.add('error');
+          if (shake) shakeField(qtyInput);
+          if (errorEl) { errorEl.textContent = result.msg; errorEl.classList.add('show'); }
+        } else {
+          qtyInput.classList.remove('error');
+          if (errorEl) errorEl.classList.remove('show');
+        }
+        return result.valid;
+      case 'message':
+        result = Validators.message(messageInput?.value || '');
+        if (!result.valid && messageInput) {
+          messageInput.classList.add('error');
+          if (errorEl) { errorEl.textContent = result.msg; errorEl.classList.add('show'); }
+        } else if (messageInput) {
+          messageInput.classList.remove('error');
+          if (errorEl) errorEl.classList.remove('show');
+        }
+        return result.valid;
+      case 'terms':
+        result = Validators.terms(form.querySelector('#terms')?.checked);
+        if (!result.valid && errorEl) { errorEl.textContent = result.msg; errorEl.classList.add('show'); }
+        else if (errorEl) errorEl.classList.remove('show');
+        return result.valid;
+      default:
+        return true;
+    }
+  }
+
+  function validateStep(step) {
+    let valid = true;
+    switch (step) {
+      case 1:
+        if (!selectedTicket) valid = false;
+        if (!validateField('ticketQty', true)) valid = false;
+        break;
+      case 2:
+        if (!validateField('visitDate', true)) valid = false;
+        break;
+      case 3:
+        ['fullName', 'email', 'phone', 'message'].forEach(id => {
+          if (!validateField(id, true)) valid = false;
+        });
+        break;
+      case 4:
+        if (!validateField('terms', true)) valid = false;
+        break;
+    }
+    return valid;
+  }
+
+  function goToStep(step) {
+    currentStep = step;
+    form.querySelectorAll('.booking-step-panel').forEach(p => {
+      p.classList.toggle('active', parseInt(p.dataset.panel, 10) === step);
+    });
+    progressSteps.forEach(s => {
+      const sNum = parseInt(s.dataset.step, 10);
+      s.classList.toggle('active', sNum === step);
+      s.classList.toggle('completed', sNum < step);
+    });
+    btnPrev.disabled = step === 1;
+    btnNext.hidden = step === totalSteps;
+    btnSubmit.hidden = step !== totalSteps;
+    updateProgress();
+    updateReviewPanel();
+
+    if (typeof gsap !== 'undefined') {
+      const panel = form.querySelector(`.booking-step-panel[data-panel="${step}"]`);
+      if (panel) gsap.fromTo(panel, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4 });
+    }
+  }
+
+  function updateProgress() {
+    progressSteps.forEach(s => {
+      const sNum = parseInt(s.dataset.step, 10);
+      s.classList.toggle('completed', sNum < currentStep);
+    });
+  }
+
+  btnNext?.addEventListener('click', () => {
+    if (!validateStep(currentStep)) {
+      showToast('Please fix the errors before continuing', 'error');
+      return;
+    }
+    if (currentStep < totalSteps) goToStep(currentStep + 1);
+  });
+
+  btnPrev?.addEventListener('click', () => {
+    if (currentStep > 1) goToStep(currentStep - 1);
+  });
 
   function updateSummary() {
-    const qty = parseInt(form.querySelector('#ticketQty')?.value || 1, 10);
+    const qty = parseInt(qtyInput?.value || 1, 10);
     const price = prices[selectedTicket] || 0;
     const subtotal = price * qty;
     const tax = subtotal * 0.05;
     const total = subtotal + tax;
+    const ticketLabel = selectedTicket.charAt(0).toUpperCase() + selectedTicket.slice(1);
+    const dateLabel = selectedDate
+      ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : 'Not selected';
 
     const set = (id, val) => {
       const el = document.getElementById(id);
       if (el) el.textContent = val;
     };
 
-    set('summaryTicket', selectedTicket.charAt(0).toUpperCase() + selectedTicket.slice(1));
+    set('summaryTicket', ticketLabel);
     set('summaryQty', qty);
-    set('summaryDate', selectedDate || 'Not selected');
+    set('summaryDate', dateLabel);
+    set('summaryUnit', `$${price.toFixed(2)}`);
     set('summarySubtotal', `$${subtotal.toFixed(2)}`);
     set('summaryTax', `$${tax.toFixed(2)}`);
     set('summaryTotal', `$${total.toFixed(2)}`);
   }
 
-  form.addEventListener('submit', (e) => {
+  function updateReviewPanel() {
+    const qty = parseInt(qtyInput?.value || 1, 10);
+    const price = prices[selectedTicket] || 0;
+    const total = (price * qty) * 1.05;
+    const ticketLabel = selectedTicket.charAt(0).toUpperCase() + selectedTicket.slice(1);
+    const dateLabel = selectedDate
+      ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : '—';
+
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    set('reviewTicket', ticketLabel);
+    set('reviewQty', qty);
+    set('reviewDate', dateLabel);
+    set('reviewTotal', `$${total.toFixed(2)}`);
+  }
+
+  const calendar = form.querySelector('.calendar-grid');
+  let calMonth = new Date().getMonth();
+  let calYear = new Date().getFullYear();
+
+  function syncCalendarSelection(dateStr) {
+    if (!calendar || !dateStr) return;
+    calendar.querySelectorAll('.calendar-day.selected').forEach(d => d.classList.remove('selected'));
+    const parts = dateStr.split('-');
+    const day = parseInt(parts[2], 10);
+    calendar.querySelectorAll('.calendar-day:not(.header):not(.disabled)').forEach(el => {
+      if (parseInt(el.textContent, 10) === day) el.classList.add('selected');
+    });
+  }
+
+  function buildCalendar() {
+    if (!calendar) return;
+    calendar.innerHTML = '';
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    days.forEach(d => {
+      const el = document.createElement('div');
+      el.className = 'calendar-day header';
+      el.textContent = d;
+      calendar.appendChild(el);
+    });
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const monthLabel = document.getElementById('calMonthLabel');
+    if (monthLabel) {
+      monthLabel.textContent = new Date(calYear, calMonth).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+
+    for (let i = 0; i < firstDay; i++) {
+      const el = document.createElement('div');
+      el.className = 'calendar-day disabled';
+      calendar.appendChild(el);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const el = document.createElement('div');
+      el.className = 'calendar-day';
+      el.textContent = day;
+      const date = new Date(calYear, calMonth, day);
+      if (date < today) el.classList.add('disabled');
+
+      el.addEventListener('click', () => {
+        if (el.classList.contains('disabled')) return;
+        calendar.querySelectorAll('.calendar-day.selected').forEach(d => d.classList.remove('selected'));
+        el.classList.add('selected');
+        const iso = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        selectedDate = iso;
+        if (visitDateInput) visitDateInput.value = iso;
+        updateSummary();
+        validateField('visitDate');
+      });
+
+      calendar.appendChild(el);
+    }
+  }
+
+  form.querySelector('#calPrev')?.addEventListener('click', () => {
+    calMonth--;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    buildCalendar();
+  });
+
+  form.querySelector('#calNext')?.addEventListener('click', () => {
+    calMonth++;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    buildCalendar();
+  });
+
+  buildCalendar();
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!validateBookingForm(form)) return;
+    if (!validateStep(4)) {
+      showToast('Please accept the terms to complete booking', 'error');
+      return;
+    }
+
+    btnSubmit.disabled = true;
+    btnSubmit.querySelector('.btn-text').hidden = true;
+    btnSubmit.querySelector('.btn-loader').hidden = false;
+
+    await new Promise(r => setTimeout(r, 1800));
+
+    btnSubmit.disabled = false;
+    btnSubmit.querySelector('.btn-text').hidden = false;
+    btnSubmit.querySelector('.btn-loader').hidden = true;
 
     const modal = document.querySelector('.confirmation-modal');
     if (modal) {
@@ -315,6 +745,7 @@ function initBooking() {
       const refEl = modal.querySelector('#bookingRef');
       if (refEl) refEl.textContent = ref;
       modal.classList.add('active');
+      showToast('Booking confirmed successfully!', 'success');
     }
   });
 
@@ -322,87 +753,91 @@ function initBooking() {
     document.querySelector('.confirmation-modal')?.classList.remove('active');
     form.reset();
     selectedDate = null;
-    ticketOptions.forEach(o => o.classList.remove('selected'));
-    if (ticketOptions.length) ticketOptions[0].classList.add('selected');
+    selectedTicket = 'adult';
+    currentStep = 1;
+    ticketCards.forEach(c => c.classList.remove('selected'));
+    ticketCards[0]?.classList.add('selected');
+    if (ticketTypeInput) ticketTypeInput.value = 'adult';
+    if (charCount) charCount.textContent = '0';
+    form.querySelectorAll('.success, .error').forEach(el => el.classList.remove('success', 'error'));
+    form.querySelectorAll('.form-error.show').forEach(el => el.classList.remove('show'));
+    goToStep(1);
+    buildCalendar();
     updateSummary();
+    form.querySelector('#fullName')?.focus();
   });
 
+  goToStep(1);
   updateSummary();
 }
 
-function buildCalendar(container, onSelect) {
-  const now = new Date();
-  let currentMonth = now.getMonth();
-  let currentYear = now.getFullYear();
+/* ── Downloads ── */
+function initDownloads() {
+  const grid = document.getElementById('downloadsGrid');
+  if (!grid || !window.SANJALIKA_ASSETS) return;
 
-  const render = () => {
-    container.innerHTML = '';
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    days.forEach(d => {
-      const el = document.createElement('div');
-      el.className = 'calendar-day header';
-      el.textContent = d;
-      container.appendChild(el);
+  const docs = SANJALIKA_ASSETS.downloads;
+
+  const renderCard = (doc) => `
+    <article class="premium-download-card" data-category="${doc.category}" data-tilt>
+      <div class="download-card-preview">
+        <img src="${assetUrl(doc.preview)}" alt="${doc.title} preview" loading="lazy">
+        <div class="download-preview-overlay">
+          <i class="fas ${doc.icon}"></i>
+        </div>
+        <span class="file-type-badge badge-${doc.type.toLowerCase()}">${doc.type}</span>
+      </div>
+      <div class="download-card-body">
+        <span class="download-category">${doc.category}</span>
+        <h4>${doc.title}</h4>
+        <div class="download-meta">
+          <span><i class="fas fa-weight-hanging"></i> ${doc.size}</span>
+          <span><i class="fas fa-download"></i> ${doc.downloads.toLocaleString()} downloads</span>
+        </div>
+        <a href="${doc.file}" download class="btn btn-premium btn-primary-premium btn-ripple btn-download" data-doc-id="${doc.id}">
+          <i class="fas fa-download"></i> Download ${doc.type}
+        </a>
+      </div>
+      <div class="download-card-glow" aria-hidden="true"></div>
+    </article>
+  `;
+
+  grid.innerHTML = docs.map(renderCard).join('');
+
+  grid.querySelectorAll('.btn-download').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.docId;
+      const doc = docs.find(d => d.id === id);
+      if (doc) {
+        doc.downloads++;
+        showToast(`Downloading ${doc.title}...`, 'success');
+      }
     });
-
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    for (let i = 0; i < firstDay; i++) {
-      const el = document.createElement('div');
-      el.className = 'calendar-day disabled';
-      container.appendChild(el);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const el = document.createElement('div');
-      el.className = 'calendar-day';
-      el.textContent = day;
-
-      const date = new Date(currentYear, currentMonth, day);
-      if (date < today) el.classList.add('disabled');
-
-      el.addEventListener('click', () => {
-        if (el.classList.contains('disabled')) return;
-        container.querySelectorAll('.calendar-day.selected').forEach(d => d.classList.remove('selected'));
-        el.classList.add('selected');
-        const formatted = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        onSelect(formatted);
-      });
-
-      container.appendChild(el);
-    }
-  };
-
-  render();
-}
-
-function validateBookingForm(form) {
-  let valid = true;
-  const fields = [
-    { id: 'fullName', rule: v => v.trim().length >= 2, msg: 'Enter your full name' },
-    { id: 'email', rule: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), msg: 'Enter a valid email' },
-    { id: 'phone', rule: v => v.trim().length >= 8, msg: 'Enter a valid phone number' }
-  ];
-
-  fields.forEach(({ id, rule, msg }) => {
-    const input = form.querySelector(`#${id}`);
-    const error = form.querySelector(`#${id}Error`);
-    if (!input) return;
-
-    if (!rule(input.value)) {
-      input.classList.add('error');
-      if (error) { error.textContent = msg; error.classList.add('show'); }
-      valid = false;
-    } else {
-      input.classList.remove('error');
-      if (error) error.classList.remove('show');
-    }
   });
 
-  return valid;
+  document.querySelectorAll('.download-filter').forEach(filterBtn => {
+    filterBtn.addEventListener('click', () => {
+      document.querySelectorAll('.download-filter').forEach(b => b.classList.remove('active'));
+      filterBtn.classList.add('active');
+      const filter = filterBtn.dataset.filter;
+
+      grid.querySelectorAll('.premium-download-card').forEach(card => {
+        const cat = card.dataset.category;
+        const show = filter === 'all' || cat === filter ||
+          (filter === 'Brochure' && cat === 'Brochure') ||
+          (filter === 'Park Map' && cat === 'Park Map') ||
+          (filter === 'Visitor Guide' && (cat === 'Visitor Guide' || cat === 'Ticket Information')) ||
+          (filter === 'Safety Guide' && cat === 'Safety Guide') ||
+          (filter === 'Policies' && (cat === 'Policies' || cat === 'Rules & Regulations'));
+        card.style.display = show ? '' : 'none';
+        if (show && typeof gsap !== 'undefined') {
+          gsap.fromTo(card, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.05 });
+        }
+      });
+    });
+  });
+
+  initCardTilt();
 }
 
 /* ── Contact Form ── */
@@ -419,21 +854,18 @@ function initContactForm() {
       const error = form.querySelector(`#${id}Error`);
       if (!input.value.trim()) {
         input.classList.add('error');
+        shakeField(input);
         if (error) error.classList.add('show');
         valid = false;
       } else {
         input.classList.remove('error');
+        input.classList.add('success');
         if (error) error.classList.remove('show');
       }
     });
 
     if (valid) {
-      const toast = document.createElement('div');
-      toast.className = 'alert alert-success position-fixed bottom-0 end-0 m-4';
-      toast.style.zIndex = '10002';
-      toast.textContent = 'Message sent successfully! We will respond within 24 hours.';
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 4000);
+      showToast('Message sent successfully! We will respond within 24 hours.', 'success');
       form.reset();
     }
   });
@@ -453,6 +885,7 @@ function initNewsletter() {
       const original = btn.innerHTML;
       btn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
       btn.disabled = true;
+      showToast('Successfully subscribed to our newsletter!', 'success');
       setTimeout(() => {
         btn.innerHTML = original;
         btn.disabled = false;
@@ -473,8 +906,9 @@ function initPageTransitions() {
 
   document.querySelectorAll('a[href]').forEach(link => {
     const href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') || href.startsWith('tel') || link.target === '_blank') return;
-    if (!href.endsWith('.html') && href !== 'index.html' && !href.match(/\.html/)) return;
+    if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto') ||
+        href.startsWith('tel') || link.target === '_blank' || link.hasAttribute('download')) return;
+    if (!href.endsWith('.html') && !href.includes('.html')) return;
 
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -503,7 +937,7 @@ function initGSAP() {
   if (typeof ScrollTrigger !== 'undefined') gsap.registerPlugin(ScrollTrigger);
 
   const heroTitle = document.querySelector('.hero-title');
-  const heroSubtitle = document.querySelector('.hero-subtitle');
+  const heroSubtitle = document.querySelector('.hero-subtitle, .hero-subtitle-animated');
   const heroBadge = document.querySelector('.hero-badge');
   const heroActions = document.querySelector('.hero-actions');
 
@@ -523,13 +957,27 @@ function initGSAP() {
     });
   });
 
-  gsap.utils.toArray('.hero-float').forEach((el, i) => {
+  gsap.utils.toArray('.hero-float, .water-bubble').forEach((el, i) => {
     gsap.to(el, {
       y: -30,
-      duration: 3 + i,
+      x: i % 2 ? 15 : -15,
+      duration: 3 + i * 0.5,
       repeat: -1,
       yoyo: true,
       ease: 'sine.inOut'
+    });
+  });
+
+  document.querySelectorAll('.premium-download-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      gsap.to(card.querySelector('.download-card-preview img'), {
+        scale: 1.08, duration: 0.6, ease: 'power2.out'
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card.querySelector('.download-card-preview img'), {
+        scale: 1, duration: 0.6, ease: 'power2.out'
+      });
     });
   });
 }

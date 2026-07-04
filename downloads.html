@@ -13,7 +13,7 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body>
+<body class="downloads-page">
     <div class="page-loader" aria-hidden="true"><div class="loader-ring"></div><p class="loader-brand">Sanja<span>lika</span></p></div>
     <div class="page-transition" aria-hidden="true"></div>
 
@@ -40,76 +40,53 @@
     </nav>
 
     <header class="page-header">
-        <div class="page-header-bg"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80" alt=""></div>
+        <div class="page-header-bg"><img src="assets/images/Slides3.jpg" alt="Sanjalika Water Park slides" loading="eager"></div>
         <div class="page-header-overlay"></div>
         <div class="page-header-content container">
             <nav class="breadcrumb-nav"><a href="index.html">Home</a> <span>/</span> <span class="active">Downloads</span></nav>
             <h1 class="section-title">Downloads</h1>
-            <p class="section-subtitle mb-0">Brochures, maps, guides, and policy documents.</p>
+            <p class="section-subtitle mb-0">Brochures, maps, guides, and essential park documents.</p>
         </div>
     </header>
 
-    <section class="section-padding section-dark">
+    <section class="section-padding downloads-section">
+        <div class="downloads-section-bg" aria-hidden="true"></div>
+        <div class="container position-relative">
+            <div class="downloads-intro text-center mb-5" data-aos="fade-up">
+                <span class="section-label">Resources</span>
+                <h2 class="section-title">Everything You Need <span class="text-gradient">Before You Visit</span></h2>
+                <p class="section-subtitle">Download official park documents, maps, and guides to plan your perfect day.</p>
+            </div>
+
+            <div class="download-filters" data-aos="fade-up">
+                <button class="filter-btn download-filter active" data-filter="all">All Documents</button>
+                <button class="filter-btn download-filter" data-filter="Brochure">Brochures</button>
+                <button class="filter-btn download-filter" data-filter="Park Map">Maps</button>
+                <button class="filter-btn download-filter" data-filter="Visitor Guide">Guides</button>
+                <button class="filter-btn download-filter" data-filter="Safety Guide">Safety</button>
+                <button class="filter-btn download-filter" data-filter="Policies">Policies</button>
+            </div>
+
+            <div class="downloads-grid" id="downloadsGrid" data-aos="fade-up" data-aos-delay="100">
+                <!-- Rendered by main.js from assets-config -->
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding section-navy">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-6" data-aos="fade-up">
-                    <div class="download-card">
-                        <div class="download-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                        <div class="flex-grow-1">
-                            <h4>Park Brochure 2026</h4>
-                            <p style="color:var(--gray-400);font-size:0.85rem;margin:0">Complete guide to attractions, dining, and events. PDF · 4.2 MB</p>
-                        </div>
-                        <a href="assets/documents/park-brochure.pdf" download class="btn btn-premium btn-primary-premium btn-ripple"><i class="fas fa-download"></i> PDF</a>
-                    </div>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <span class="section-label">Need Help?</span>
+                    <h2 class="section-title">Can't Find What <span class="text-gradient">You're Looking For?</span></h2>
+                    <p style="color:var(--gray-200)">Our guest services team is available daily to assist with document requests, group bookings, and special accommodations.</p>
+                    <a href="contact.html" class="btn btn-premium btn-primary-premium btn-ripple mt-3"><i class="fas fa-envelope"></i> Contact Us</a>
                 </div>
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="download-card">
-                        <div class="download-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                        <div class="flex-grow-1">
-                            <h4>Park Map</h4>
-                            <p style="color:var(--gray-400);font-size:0.85rem;margin:0">Detailed map of all rides, facilities, and dining locations. PDF · 2.8 MB</p>
-                        </div>
-                        <a href="assets/documents/park-map.pdf" download class="btn btn-premium btn-primary-premium btn-ripple"><i class="fas fa-download"></i> PDF</a>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-up">
-                    <div class="download-card">
-                        <div class="download-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                        <div class="flex-grow-1">
-                            <h4>Safety Guide</h4>
-                            <p style="color:var(--gray-400);font-size:0.85rem;margin:0">Ride restrictions, safety rules, and emergency procedures. PDF · 1.5 MB</p>
-                        </div>
-                        <a href="assets/documents/safety-guide.pdf" download class="btn btn-premium btn-primary-premium btn-ripple"><i class="fas fa-download"></i> PDF</a>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="download-card">
-                        <div class="download-icon doc"><i class="fas fa-file-word"></i></div>
-                        <div class="flex-grow-1">
-                            <h4>Group Booking Form</h4>
-                            <p style="color:var(--gray-400);font-size:0.85rem;margin:0">School and corporate group reservation form. DOC · 256 KB</p>
-                        </div>
-                        <a href="assets/documents/group-booking-form.doc" download class="btn btn-premium btn-outline-premium btn-ripple"><i class="fas fa-download"></i> DOC</a>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-up">
-                    <div class="download-card">
-                        <div class="download-icon doc"><i class="fas fa-file-word"></i></div>
-                        <div class="flex-grow-1">
-                            <h4>Event Inquiry Form</h4>
-                            <p style="color:var(--gray-400);font-size:0.85rem;margin:0">Birthday parties, corporate events, and private functions. DOC · 180 KB</p>
-                        </div>
-                        <a href="assets/documents/event-inquiry.doc" download class="btn btn-premium btn-outline-premium btn-ripple"><i class="fas fa-download"></i> DOC</a>
-                    </div>
-                </div>
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <div class="download-card">
-                        <div class="download-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                        <div class="flex-grow-1">
-                            <h4>Privacy Policy</h4>
-                            <p style="color:var(--gray-400);font-size:0.85rem;margin:0">Data protection and privacy terms for guests and online bookings. PDF · 890 KB</p>
-                        </div>
-                        <a href="assets/documents/privacy-policy.pdf" download class="btn btn-premium btn-primary-premium btn-ripple"><i class="fas fa-download"></i> PDF</a>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="glass-card downloads-help-card">
+                        <div class="help-stat"><i class="fas fa-download"></i><div><strong>12,000+</strong><span>Total Downloads</span></div></div>
+                        <div class="help-stat"><i class="fas fa-file-pdf"></i><div><strong>7</strong><span>Official Documents</span></div></div>
+                        <div class="help-stat"><i class="fas fa-sync"></i><div><strong>Updated</strong><span>March 2026</span></div></div>
                     </div>
                 </div>
             </div>
@@ -125,6 +102,7 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="assets/js/assets-config.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>

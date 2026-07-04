@@ -13,7 +13,7 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body>
+<body class="booking-page">
     <div class="page-loader" aria-hidden="true"><div class="loader-ring"></div><p class="loader-brand">Sanja<span>lika</span></p></div>
     <div class="page-transition" aria-hidden="true"></div>
 
@@ -40,7 +40,7 @@
     </nav>
 
     <header class="page-header">
-        <div class="page-header-bg"><img src="https://images.unsplash.com/photo-1519451241324-20b4ea2c8d41?w=1920&q=80" alt=""></div>
+        <div class="page-header-bg"><img src="assets/images/Rides_&_Slides3.jpg" alt="Sanjalika Water Park rides and slides" loading="eager"></div>
         <div class="page-header-overlay"></div>
         <div class="page-header-content container">
             <nav class="breadcrumb-nav"><a href="index.html">Home</a> <span>/</span> <span class="active">Booking</span></nav>
@@ -49,85 +49,212 @@
         </div>
     </header>
 
-    <section class="section-padding section-dark">
-        <div class="container">
-            <div class="booking-wrapper">
-                <form id="bookingForm" class="booking-form glass-card" novalidate data-aos="fade-right">
-                    <h3 class="mb-4">Select Your Tickets</h3>
+    <section class="section-padding booking-section">
+        <div class="booking-section-bg" aria-hidden="true"></div>
+        <div class="container position-relative">
+            <div class="booking-progress" data-aos="fade-up">
+                <div class="progress-step active" data-step="1">
+                    <span class="step-icon"><i class="fas fa-ticket-alt"></i></span>
+                    <span class="step-label">Tickets</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="2">
+                    <span class="step-icon"><i class="fas fa-calendar-days"></i></span>
+                    <span class="step-label">Date</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="3">
+                    <span class="step-icon"><i class="fas fa-user"></i></span>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="progress-line"></div>
+                <div class="progress-step" data-step="4">
+                    <span class="step-icon"><i class="fas fa-check-circle"></i></span>
+                    <span class="step-label">Confirm</span>
+                </div>
+            </div>
 
-                    <div class="form-group">
-                        <label>Ticket Type</label>
-                        <div class="ticket-selector">
-                            <button type="button" class="ticket-option selected" data-ticket="adult">Adult<span class="ticket-price">$45</span></button>
-                            <button type="button" class="ticket-option" data-ticket="child">Child<span class="ticket-price">$28</span></button>
-                            <button type="button" class="ticket-option" data-ticket="senior">Senior<span class="ticket-price">$35</span></button>
-                            <button type="button" class="ticket-option" data-ticket="family">Family Pack<span class="ticket-price">$120</span></button>
+            <div class="booking-wrapper booking-premium">
+                <form id="bookingForm" class="booking-form glass-card booking-glass" novalidate data-aos="fade-right">
+                    <div class="booking-step-panel active" data-panel="1">
+                        <h3 class="booking-panel-title"><i class="fas fa-ticket-alt"></i> Select Your Tickets</h3>
+                        <p class="booking-panel-desc">Choose the perfect pass for your adventure</p>
+
+                        <div class="form-group">
+                            <label>Ticket Type <span class="required">*</span></label>
+                            <div class="ticket-cards" role="group" aria-label="Ticket type">
+                                <button type="button" class="ticket-card selected" data-ticket="adult" data-price="45">
+                                    <span class="ticket-card-icon"><i class="fas fa-user"></i></span>
+                                    <span class="ticket-card-name">Adult</span>
+                                    <span class="ticket-card-age">13+ years</span>
+                                    <span class="ticket-card-price">$45</span>
+                                </button>
+                                <button type="button" class="ticket-card" data-ticket="child" data-price="28">
+                                    <span class="ticket-card-icon"><i class="fas fa-child"></i></span>
+                                    <span class="ticket-card-name">Child</span>
+                                    <span class="ticket-card-age">3–12 years</span>
+                                    <span class="ticket-card-price">$28</span>
+                                </button>
+                                <button type="button" class="ticket-card" data-ticket="family" data-price="120">
+                                    <span class="ticket-card-icon"><i class="fas fa-people-group"></i></span>
+                                    <span class="ticket-card-name">Family</span>
+                                    <span class="ticket-card-age">2 Adults + 2 Kids</span>
+                                    <span class="ticket-card-price">$120</span>
+                                </button>
+                                <button type="button" class="ticket-card" data-ticket="vip" data-price="89">
+                                    <span class="ticket-card-icon"><i class="fas fa-crown"></i></span>
+                                    <span class="ticket-card-name">VIP</span>
+                                    <span class="ticket-card-age">All-inclusive</span>
+                                    <span class="ticket-card-price">$89</span>
+                                </button>
+                            </div>
+                            <input type="hidden" id="ticketType" name="ticketType" value="adult">
+                            <span class="form-error" id="ticketTypeError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ticketQty">Number of Visitors <span class="required">*</span></label>
+                            <div class="visitor-counter">
+                                <button type="button" class="counter-btn" id="qtyMinus" aria-label="Decrease visitors"><i class="fas fa-minus"></i></button>
+                                <input type="number" id="ticketQty" name="quantity" min="1" max="20" value="1" required aria-describedby="qtyHint">
+                                <button type="button" class="counter-btn" id="qtyPlus" aria-label="Increase visitors"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <small id="qtyHint" class="form-hint">Minimum 1, maximum 20 visitors</small>
+                            <span class="form-error" id="ticketQtyError"></span>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="ticketQty">Quantity</label>
-                        <input type="number" id="ticketQty" name="quantity" min="1" max="20" value="1" required>
+                    <div class="booking-step-panel" data-panel="2">
+                        <h3 class="booking-panel-title"><i class="fas fa-calendar-days"></i> Choose Visit Date</h3>
+                        <p class="booking-panel-desc">Select your preferred day at the park</p>
+
+                        <div class="form-group">
+                            <label for="visitDate">Visit Date <span class="required">*</span></label>
+                            <input type="date" id="visitDate" name="visitDate" required>
+                            <div class="calendar-wrap">
+                                <div class="calendar-header">
+                                    <button type="button" class="calendar-nav" id="calPrev" aria-label="Previous month"><i class="fas fa-chevron-left"></i></button>
+                                    <span id="calMonthLabel"></span>
+                                    <button type="button" class="calendar-nav" id="calNext" aria-label="Next month"><i class="fas fa-chevron-right"></i></button>
+                                </div>
+                                <div class="calendar-grid" aria-label="Date picker calendar"></div>
+                            </div>
+                            <span class="form-error" id="visitDateError"></span>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Select Visit Date</label>
-                        <div class="calendar-grid" aria-label="Date picker calendar"></div>
-                    </div>
+                    <div class="booking-step-panel" data-panel="3">
+                        <h3 class="booking-panel-title"><i class="fas fa-user-pen"></i> Guest Details</h3>
+                        <p class="booking-panel-desc">Tell us who will be visiting</p>
 
-                    <hr style="border-color:rgba(255,255,255,0.1);margin:2rem 0">
+                        <div class="form-group form-group-icon">
+                            <label for="fullName">Full Name <span class="required">*</span></label>
+                            <div class="input-wrap">
+                                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required autocomplete="name" minlength="3">
+                                <span class="field-status" aria-hidden="true"></span>
+                            </div>
+                            <span class="form-error" id="fullNameError"></span>
+                        </div>
 
-                    <h4 class="mb-3">Guest Details</h4>
-
-                    <div class="form-group">
-                        <label for="fullName">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="John Doe" required autocomplete="name">
-                        <span class="form-error" id="fullNameError"></span>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" name="email" placeholder="john@email.com" required autocomplete="email">
-                                <span class="form-error" id="emailError"></span>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group form-group-icon">
+                                    <label for="email">Email Address <span class="required">*</span></label>
+                                    <div class="input-wrap">
+                                        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+                                        <span class="field-status" aria-hidden="true"></span>
+                                    </div>
+                                    <span class="form-error" id="emailError"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group form-group-icon">
+                                    <label for="phone">Phone Number <span class="required">*</span></label>
+                                    <div class="input-wrap">
+                                        <input type="tel" id="phone" name="phone" placeholder="+92 300 1234567" required autocomplete="tel">
+                                        <span class="field-status" aria-hidden="true"></span>
+                                    </div>
+                                    <span class="form-error" id="phoneError"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" placeholder="+94 77 123 4567" required autocomplete="tel">
-                                <span class="form-error" id="phoneError"></span>
-                            </div>
+
+                        <div class="form-group">
+                            <label for="message">Special Requests</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Any dietary requirements, accessibility needs, or special occasions..." minlength="10" maxlength="500"></textarea>
+                            <div class="char-counter"><span id="charCount">0</span> / 500 characters</div>
+                            <span class="form-error" id="messageError"></span>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-premium btn-primary-premium btn-ripple w-100 mt-3">
-                        <i class="fas fa-lock"></i> Confirm Booking
-                    </button>
+                    <div class="booking-step-panel" data-panel="4">
+                        <h3 class="booking-panel-title"><i class="fas fa-shield-check"></i> Review &amp; Confirm</h3>
+                        <p class="booking-panel-desc">Please review your booking and accept terms</p>
+
+                        <div class="review-summary glass-card-inner">
+                            <div class="summary-row"><span>Ticket</span><span id="reviewTicket">Adult</span></div>
+                            <div class="summary-row"><span>Visitors</span><span id="reviewQty">1</span></div>
+                            <div class="summary-row"><span>Date</span><span id="reviewDate">—</span></div>
+                            <div class="summary-row total"><span>Total</span><span id="reviewTotal">$47.25</span></div>
+                        </div>
+
+                        <div class="form-group form-check-group">
+                            <label class="checkbox-premium">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="checkmark"></span>
+                                <span>I agree to the <a href="downloads.html">terms &amp; conditions</a> and cancellation policy <span class="required">*</span></span>
+                            </label>
+                            <span class="form-error" id="termsError"></span>
+                        </div>
+                    </div>
+
+                    <div class="booking-nav-buttons">
+                        <button type="button" class="btn btn-premium btn-outline-premium btn-ripple" id="btnPrev" disabled>
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-premium btn-primary-premium btn-ripple" id="btnNext">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" class="btn btn-premium btn-primary-premium btn-ripple btn-loading-capable" id="btnSubmit" hidden>
+                            <span class="btn-text"><i class="fas fa-lock"></i> Confirm Booking</span>
+                            <span class="btn-loader" hidden><i class="fas fa-circle-notch fa-spin"></i> Processing...</span>
+                        </button>
+                    </div>
                 </form>
 
-                <aside class="booking-summary" data-aos="fade-left">
-                    <div class="glass-card">
-                        <h4 class="mb-4"><i class="fas fa-receipt me-2" style="color:var(--aqua)"></i>Order Summary</h4>
+                <aside class="booking-summary booking-summary-live" data-aos="fade-left">
+                    <div class="glass-card summary-glass">
+                        <div class="summary-header">
+                            <i class="fas fa-receipt"></i>
+                            <h4>Live Ticket Summary</h4>
+                        </div>
+                        <div class="summary-ticket-preview">
+                            <img src="assets/images/Rides_&_Slides.jpg" alt="Sanjalika Water Park" loading="lazy">
+                            <div class="summary-ticket-overlay">
+                                <span class="summary-badge">Online Exclusive</span>
+                            </div>
+                        </div>
                         <div class="summary-row"><span>Ticket Type</span><span id="summaryTicket">Adult</span></div>
-                        <div class="summary-row"><span>Quantity</span><span id="summaryQty">1</span></div>
+                        <div class="summary-row"><span>Visitors</span><span id="summaryQty">1</span></div>
                         <div class="summary-row"><span>Visit Date</span><span id="summaryDate">Not selected</span></div>
+                        <div class="summary-row"><span>Price Each</span><span id="summaryUnit">$45.00</span></div>
                         <div class="summary-row"><span>Subtotal</span><span id="summarySubtotal">$45.00</span></div>
                         <div class="summary-row"><span>Tax (5%)</span><span id="summaryTax">$2.25</span></div>
                         <div class="summary-row total"><span>Total</span><span id="summaryTotal">$47.25</span></div>
 
-                        <div class="mt-4 p-3 rounded-3" style="background:rgba(0,229,200,0.08);border:1px solid var(--glass-border)">
-                            <p style="font-size:0.85rem;color:var(--gray-200);margin:0"><i class="fas fa-info-circle me-2" style="color:var(--aqua)"></i>Online bookings save 15%. Free cancellation up to 48 hours before visit.</p>
+                        <div class="summary-perks">
+                            <div class="perk-item"><i class="fas fa-percent"></i> 15% online discount applied</div>
+                            <div class="perk-item"><i class="fas fa-undo"></i> Free cancellation 48h before</div>
+                            <div class="perk-item"><i class="fas fa-bolt"></i> Instant e-ticket delivery</div>
                         </div>
                     </div>
 
-                    <div class="glass-card mt-3">
-                        <h5 class="mb-3">Ticket Pricing</h5>
-                        <div class="summary-row"><span>Adult (13+)</span><span style="color:var(--aqua)">$45</span></div>
-                        <div class="summary-row"><span>Child (3–12)</span><span style="color:var(--aqua)">$28</span></div>
-                        <div class="summary-row"><span>Senior (60+)</span><span style="color:var(--aqua)">$35</span></div>
-                        <div class="summary-row"><span>Family (4)</span><span style="color:var(--aqua)">$120</span></div>
+                    <div class="glass-card pricing-reference mt-3">
+                        <h5><i class="fas fa-tags"></i> Ticket Pricing</h5>
+                        <div class="summary-row"><span>Adult (13+)</span><span class="price-tag">$45</span></div>
+                        <div class="summary-row"><span>Child (3–12)</span><span class="price-tag">$28</span></div>
+                        <div class="summary-row"><span>Family Pack</span><span class="price-tag">$120</span></div>
+                        <div class="summary-row"><span>VIP Experience</span><span class="price-tag">$89</span></div>
                     </div>
                 </aside>
             </div>
@@ -135,14 +262,19 @@
     </section>
 
     <div class="confirmation-modal" role="dialog" aria-labelledby="confirmTitle" aria-modal="true">
-        <div class="confirmation-box">
-            <div class="check-icon"><i class="fas fa-check"></i></div>
+        <div class="confirmation-box confirmation-premium">
+            <div class="confirm-animation">
+                <div class="check-icon"><i class="fas fa-check"></i></div>
+                <div class="confirm-rings" aria-hidden="true"></div>
+            </div>
             <h3 id="confirmTitle">Booking Confirmed!</h3>
-            <p style="color:var(--gray-200);margin:1rem 0">Your tickets have been reserved. A confirmation email will be sent shortly.</p>
-            <p style="color:var(--aqua);font-weight:600">Reference: <span id="bookingRef">SJ-XXXX</span></p>
-            <button type="button" class="btn btn-premium btn-primary-premium btn-ripple btn-close-modal mt-3">Done</button>
+            <p class="confirm-desc">Your tickets have been reserved. A confirmation email will be sent shortly.</p>
+            <p class="confirm-ref">Reference: <span id="bookingRef">SJ-XXXX</span></p>
+            <button type="button" class="btn btn-premium btn-primary-premium btn-ripple btn-close-modal">Done</button>
         </div>
     </div>
+
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
     <footer class="site-footer">
         <div class="footer-wave" aria-hidden="true"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#061220" d="M0,20 C240,60 480,0 720,30 C960,60 1200,10 1440,40 L1440,0 L0,0 Z"/></svg></div>
@@ -153,6 +285,7 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="assets/js/assets-config.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 </html>
