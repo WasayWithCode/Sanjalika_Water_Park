@@ -8,10 +8,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   initPageLoader();
   initNavbar();
+  initFooter();
+  initSmoothScrolling();
+  initScrollToTop();
   initRipple();
   initCounters();
   initFAQ();
   initGallery();
+  initLightSliders();
   initRideFilter();
   initBooking();
   initDownloads();
@@ -19,22 +23,152 @@ document.addEventListener('DOMContentLoaded', () => {
   initPageTransitions();
   initHeroVideo();
   initCardTilt();
+  initSectionReveals();
+  initResponsiveMedia();
+  initAccessibilityAndSEO();
   initAOS();
   initGSAP();
 });
 
+/* Footer */
+function initFooter() {
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+
+  footer.innerHTML = `
+    <div class="footer-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#05131f" d="M0,20 C240,60 480,0 720,30 C960,60 1200,10 1440,40 L1440,0 L0,0 Z"/>
+      </svg>
+    </div>
+    <div class="footer-main">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="footer-brand"><span class="brand-mark"><i class="fas fa-water"></i></span> Sanjalika</div>
+            <p class="footer-desc">Sri Lanka's premium water park experience with signature slides, resort-style facilities, all-day dining, and family-first guest care.</p>
+            <div class="social-links">
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+              <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 class="footer-title">Visit</h5>
+            <ul class="footer-links">
+              <li><a href="park-info.html">Park Info</a></li>
+              <li><a href="rides.html">Rides &amp; Slides</a></li>
+              <li><a href="facilities.html">Facilities</a></li>
+              <li><a href="food-zone.html">Food Zone</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-lg-2">
+            <h5 class="footer-title">Plan</h5>
+            <ul class="footer-links">
+              <li><a href="booking.html">Book Tickets</a></li>
+              <li><a href="downloads.html">Downloads</a></li>
+              <li><a href="gallery.html">Gallery</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4">
+            <h5 class="footer-title">Guest Services</h5>
+            <p class="footer-contact"><i class="fas fa-map-marker-alt"></i> 123 Coastal Road, Panadura, Sri Lanka</p>
+            <p class="footer-contact"><i class="fas fa-phone"></i> <a href="tel:+94382234567">+94 38 223 4567</a></p>
+            <p class="footer-contact"><i class="fas fa-envelope"></i> <a href="mailto:info@sanjalika.lk">info@sanjalika.lk</a></p>
+            <div class="footer-hours">
+              <span>Mon-Fri: 10 AM-6 PM</span>
+              <span>Sat-Sun: 9 AM-8 PM</span>
+            </div>
+          </div>
+        </div>
+        <div class="newsletter-box mt-5 p-4 footer-newsletter">
+          <div class="row align-items-center g-3">
+            <div class="col-md-6"><h5 class="mb-0">Get splash deals in your inbox</h5></div>
+            <div class="col-md-6">
+              <form class="newsletter-form mt-0" aria-label="Footer newsletter signup">
+                <input type="email" placeholder="Your email" required aria-label="Footer newsletter email">
+                <button type="submit" class="btn btn-premium btn-primary-premium btn-ripple">Join</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container"><p>&copy; 2026 Sanjalika Water Park. All rights reserved. <a href="downloads.html">Policies &amp; Guides</a></p></div>
+    </div>
+  `;
+}
+
 /* ── Page Loader ── */
 function initPageLoader() {
-  const loader = document.querySelector('.page-loader');
-  if (!loader) return;
-
-  const hide = () => {
-    loader.classList.add('hidden');
+  const loader = document.querySelector('.aqua-preloader, .page-loader');
+  if (!loader) {
+    document.body.classList.remove('is-loading');
     document.body.classList.add('page-loaded');
+    return;
+  }
+
+  let completed = false;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const finish = () => {
+    if (completed) return;
+    completed = true;
+
+    const completeUi = () => {
+      loader.classList.add('is-complete', 'hidden');
+      document.body.classList.remove('is-loading');
+      document.body.classList.add('page-loaded');
+      setTimeout(() => loader.remove(), reducedMotion ? 120 : 900);
+    };
+
+    if (window.jQuery) {
+      const $loader = window.jQuery(loader);
+      const $percent = $loader.find('[data-loader-percent]');
+      const $bar = $loader.find('.preloader-progress-fill');
+
+      window.jQuery({ value: parseInt($percent.text(), 10) || 90 }).animate({ value: 100 }, {
+        duration: reducedMotion ? 1 : 420,
+        easing: 'swing',
+        step(now) {
+          const value = Math.round(now);
+          $percent.text(value);
+          $bar.css('width', `${value}%`);
+        },
+        complete() {
+          $loader.delay(reducedMotion ? 0 : 220).fadeOut(reducedMotion ? 1 : 720, completeUi);
+        }
+      });
+      return;
+    }
+
+    completeUi();
   };
 
-  window.addEventListener('load', () => setTimeout(hide, 600));
-  setTimeout(hide, 3000);
+  if (window.jQuery) {
+    const $loader = window.jQuery(loader);
+    const $percent = $loader.find('[data-loader-percent]');
+    const $bar = $loader.find('.preloader-progress-fill');
+
+    window.jQuery({ value: 0 }).animate({ value: 92 }, {
+      duration: reducedMotion ? 1 : 1600,
+      easing: 'swing',
+      step(now) {
+        const value = Math.round(now);
+        $percent.text(value);
+        $bar.css('width', `${value}%`);
+      }
+    });
+
+    window.jQuery(window).on('load', () => setTimeout(finish, reducedMotion ? 0 : 450));
+  } else {
+    window.addEventListener('load', () => setTimeout(finish, reducedMotion ? 0 : 450));
+  }
+
+  setTimeout(finish, 4500);
 }
 
 /* ── Navbar Scroll ── */
@@ -61,7 +195,17 @@ function initNavbar() {
   handleScroll();
 
   const collapse = nav.querySelector('.navbar-collapse');
+  const toggler = nav.querySelector('.navbar-toggler');
   if (collapse) {
+    collapse.addEventListener('show.bs.collapse', () => {
+      nav.classList.add('nav-menu-open');
+      if (toggler) toggler.classList.add('is-active');
+    });
+    collapse.addEventListener('hide.bs.collapse', () => {
+      nav.classList.remove('nav-menu-open');
+      if (toggler) toggler.classList.remove('is-active');
+    });
+
     collapse.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         if (window.innerWidth < 992) {
@@ -71,6 +215,46 @@ function initNavbar() {
       });
     });
   }
+}
+
+/* Smooth scrolling */
+function initSmoothScrolling() {
+  if (!window.jQuery) return;
+  const $ = window.jQuery;
+  const navOffset = () => (document.querySelector('.premium-nav')?.offsetHeight || 76) + 12;
+
+  $('a[href^="#"]').on('click', function (e) {
+    const href = $(this).attr('href');
+    if (!href || href === '#') return;
+
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    e.preventDefault();
+    $('html, body').stop().animate({
+      scrollTop: Math.max(0, $(target).offset().top - navOffset())
+    }, 760, 'swing');
+  });
+}
+
+/* Scroll to top */
+function initScrollToTop() {
+  if (!window.jQuery) return;
+  const $ = window.jQuery;
+  let $btn = $('.scroll-to-top');
+
+  if (!$btn.length) {
+    $btn = $('<button class="scroll-to-top" type="button" aria-label="Scroll to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>');
+    $('body').append($btn);
+  }
+
+  $(window).on('scroll', () => {
+    $btn.toggleClass('is-visible', window.scrollY > 620);
+  });
+
+  $btn.on('click', () => {
+    $('html, body').stop().animate({ scrollTop: 0 }, 760, 'swing');
+  });
 }
 
 /* ── Hero Video ── */
@@ -127,6 +311,8 @@ function initHeroVideo() {
 /* ── Ripple Effect ── */
 function initRipple() {
   document.querySelectorAll('.btn-ripple').forEach(btn => {
+    if (btn.dataset.rippleBound === 'true') return;
+    btn.dataset.rippleBound = 'true';
     btn.addEventListener('click', function (e) {
       const rect = this.getBoundingClientRect();
       const ripple = document.createElement('span');
@@ -169,6 +355,20 @@ function initCounters() {
     const duration = 2000;
     const start = performance.now();
 
+    if (window.jQuery) {
+      window.jQuery({ value: 0 }).animate({ value: target }, {
+        duration,
+        easing: 'swing',
+        step(now) {
+          el.textContent = Math.floor(now).toLocaleString() + suffix;
+        },
+        complete() {
+          el.textContent = target.toLocaleString() + suffix;
+        }
+      });
+      return;
+    }
+
     const update = (now) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
@@ -199,6 +399,8 @@ function initFAQ() {
       const isActive = item.classList.contains('active');
       document.querySelectorAll('.faq-item.active').forEach(i => i.classList.remove('active'));
       if (!isActive) item.classList.add('active');
+      document.querySelectorAll('.faq-question[aria-expanded="true"]').forEach(q => q.setAttribute('aria-expanded', 'false'));
+      btn.setAttribute('aria-expanded', String(!isActive));
     });
   });
 }
@@ -220,7 +422,11 @@ function initGallery() {
       items.forEach(item => {
         const cat = item.dataset.category;
         const show = filter === 'all' || cat === filter;
-        item.style.display = show ? '' : 'none';
+        if (window.jQuery) {
+          window.jQuery(item)[show ? 'fadeIn' : 'fadeOut'](260);
+        } else {
+          item.style.display = show ? '' : 'none';
+        }
         if (show && typeof gsap !== 'undefined') {
           gsap.fromTo(item, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.4 });
         }
@@ -249,6 +455,7 @@ function initGallery() {
         lightboxImg.src = img.src;
         lightboxImg.alt = img.alt;
         lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
       }
     });
@@ -256,12 +463,26 @@ function initGallery() {
 
   const closeLightbox = () => {
     lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   };
 
   closeBtn.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+}
+
+/* Lightweight mobile sliders */
+function initLightSliders() {
+  if (!window.jQuery) return;
+  const $ = window.jQuery;
+
+  $('.row').has('.attraction-card, .facility-card, .restaurant-card, .testimonial-card').each(function () {
+    const $row = $(this);
+    const cardCount = $row.children('[class*="col-"]').length;
+    if (cardCount < 4 || $row.closest('.booking-premium, .downloads-grid').length) return;
+    $row.addClass('mobile-snap-row');
+  });
 }
 
 /* ── Ride Filter ── */
@@ -334,11 +555,10 @@ const Validators = {
   },
   phone(value) {
     const v = value.trim();
-    const pkRegex = /^(\+92|0)?3[0-9]{2}[\s-]?[0-9]{7}$/;
     const intlRegex = /^\+?[1-9]\d{7,14}$/;
     const cleaned = v.replace(/[\s()-]/g, '');
-    if (pkRegex.test(cleaned) || intlRegex.test(cleaned)) return { valid: true };
-    return { valid: false, msg: 'Enter a valid phone (PK: +92 3XX XXXXXXX or international)' };
+    if (intlRegex.test(cleaned)) return { valid: true };
+    return { valid: false, msg: 'Enter a valid phone number with country code when outside Sri Lanka' };
   },
   visitDate(value) {
     if (!value) return { valid: false, msg: 'Please select a visit date' };
@@ -421,7 +641,8 @@ function initBooking() {
 
   const todayStr = () => {
     const d = new Date();
-    return d.toISOString().split('T')[0];
+    const offsetDate = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    return offsetDate.toISOString().split('T')[0];
   };
 
   if (visitDateInput) {
@@ -790,8 +1011,11 @@ function initDownloads() {
       <div class="download-card-body">
         <span class="download-category">${doc.category}</span>
         <h4>${doc.title}</h4>
+        <p>${doc.description}</p>
         <div class="download-meta">
           <span><i class="fas fa-weight-hanging"></i> ${doc.size}</span>
+          <span><i class="fas fa-file-lines"></i> ${doc.pages}</span>
+          <span><i class="fas fa-calendar-check"></i> ${doc.updated}</span>
           <span><i class="fas fa-download"></i> ${doc.downloads.toLocaleString()} downloads</span>
         </div>
         <a href="${doc.file}" download class="btn btn-premium btn-primary-premium btn-ripple btn-download" data-doc-id="${doc.id}">
@@ -837,6 +1061,7 @@ function initDownloads() {
     });
   });
 
+  initRipple();
   initCardTilt();
 }
 
@@ -912,9 +1137,96 @@ function initPageTransitions() {
 
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      document.body.classList.add('is-transitioning');
       transition.classList.add('active');
       setTimeout(() => { window.location.href = href; }, 500);
     });
+  });
+
+  window.addEventListener('pageshow', () => {
+    transition.classList.remove('active');
+    document.body.classList.remove('is-transitioning');
+  });
+}
+
+/* Section reveal fallback */
+function initSectionReveals() {
+  const revealables = document.querySelectorAll('.glass-card, .attraction-card, .pricing-card, .testimonial-card, .info-card, .facility-card, .restaurant-card, .premium-download-card, .newsletter-box, .cta-banner');
+  if (!revealables.length) return;
+
+  revealables.forEach(el => {
+    if (!el.hasAttribute('data-aos')) el.classList.add('reveal-on-scroll');
+  });
+
+  const reveal = (el) => {
+    el.classList.add('is-revealed');
+    if (window.jQuery) window.jQuery(el).stop(true, true).animate({ opacity: 1 }, 420);
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    revealables.forEach(reveal);
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        reveal(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+}
+
+function initResponsiveMedia() {
+  document.querySelectorAll('img:not([loading])').forEach(img => {
+    if (!img.closest('.hero-section, .page-header')) img.loading = 'lazy';
+  });
+
+  document.querySelectorAll('img').forEach(img => {
+    img.decoding = 'async';
+  });
+}
+
+function initAccessibilityAndSEO() {
+  if (!document.querySelector('meta[name="theme-color"]')) {
+    const theme = document.createElement('meta');
+    theme.name = 'theme-color';
+    theme.content = '#05131f';
+    document.head.appendChild(theme);
+  }
+
+  if (!document.querySelector('link[rel="canonical"]')) {
+    const canonical = document.createElement('link');
+    canonical.rel = 'canonical';
+    canonical.href = window.location.href.split('#')[0];
+    document.head.appendChild(canonical);
+  }
+
+  if (!document.querySelector('script[type="application/ld+json"][data-sanjalika-schema]')) {
+    const schema = document.createElement('script');
+    schema.type = 'application/ld+json';
+    schema.dataset.sanjalikaSchema = 'true';
+    schema.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'AmusementPark',
+      name: 'Sanjalika Water Park',
+      description: 'Premium water park destination with slides, wave pools, dining, facilities, and online booking.',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '123 Coastal Road',
+        addressLocality: 'Panadura',
+        addressCountry: 'LK'
+      },
+      url: window.location.href.split('#')[0]
+    });
+    document.head.appendChild(schema);
+  }
+
+  document.querySelectorAll('.navbar-toggler').forEach(btn => {
+    btn.setAttribute('aria-label', 'Toggle navigation menu');
   });
 }
 

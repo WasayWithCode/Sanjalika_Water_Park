@@ -13,8 +13,23 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body>
-    <div class="page-loader" aria-hidden="true"><div class="loader-ring"></div><p class="loader-brand">Sanja<span>lika</span></p></div>
+<body class="is-loading">
+    <div class="aqua-preloader" role="status" aria-live="polite" aria-label="Loading Sanjalika Water Park">
+        <div class="preloader-glow" aria-hidden="true"></div>
+        <div class="preloader-ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="preloader-panel">
+            <div class="preloader-mark" aria-hidden="true">
+                <i class="fas fa-water"></i>
+                <span class="preloader-liquid"></span>
+            </div>
+            <p class="preloader-kicker">Premium Aqua Escape</p>
+            <p class="preloader-brand">Sanja<span>lika</span></p>
+            <div class="preloader-progress" aria-hidden="true"><span class="preloader-progress-fill"></span></div>
+            <p class="preloader-percent"><span data-loader-percent>0</span>%</p>
+        </div>
+        <div class="preloader-wave preloader-wave-one" aria-hidden="true"></div>
+        <div class="preloader-wave preloader-wave-two" aria-hidden="true"></div>
+    </div>
     <div class="page-transition" aria-hidden="true"></div>
 
     <nav class="navbar navbar-expand-lg premium-nav fixed-top nav-scrolled" aria-label="Main navigation">
@@ -44,101 +59,117 @@
         <div class="page-header-overlay"></div>
         <div class="page-header-content container">
             <nav class="breadcrumb-nav"><a href="index.html">Home</a> <span>/</span> <span class="active">Facilities</span></nav>
-            <h1 class="section-title">Facilities</h1>
-            <p class="section-subtitle mb-0">Premium amenities for your comfort and convenience.</p>
+            <h1 class="section-title">Guest Facilities</h1>
+            <p class="section-subtitle mb-0">Resort-level comfort, safety, and service built around a full day in the water.</p>
         </div>
     </header>
+
+    <section class="section-padding section-navy">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="section-label">Amenities</span>
+                <h2 class="section-title">Everything Between <span class="text-gradient">Every Splash</span></h2>
+                <p class="section-subtitle">From arrival to checkout, Sanjalika is designed for easy family flow: dry storage, calm rest zones, quick care, and helpful guest services.</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-6 col-lg-3" data-aos="fade-up"><div class="info-card text-center"><i class="fas fa-person-shelter"></i><h4>Rest Zones</h4><p style="color:var(--gray-200);font-size:0.9rem">Shaded seating, cabanas, and quiet poolside lounges.</p></div></div>
+                <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="100"><div class="info-card text-center"><i class="fas fa-shield-heart"></i><h4>Guest Care</h4><p style="color:var(--gray-200);font-size:0.9rem">First aid stations, lifeguard support, and family assistance.</p></div></div>
+                <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="200"><div class="info-card text-center"><i class="fas fa-bag-shopping"></i><h4>Retail</h4><p style="color:var(--gray-200);font-size:0.9rem">Swim essentials, souvenirs, sunscreen, and rentals.</p></div></div>
+                <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="300"><div class="info-card text-center"><i class="fas fa-universal-access"></i><h4>Access</h4><p style="color:var(--gray-200);font-size:0.9rem">Accessible routes, adapted restrooms, and staff support.</p></div></div>
+            </div>
+        </div>
+    </section>
 
     <section class="section-padding section-dark">
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-6 col-lg-4" data-aos="fade-up">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Rides.jpg" alt="Secure locker facility" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/lockers.jpg" alt="Secure digital lockers near the water park entrance" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-lock"></i></div>
                             <h3>Secure Lockers</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Electronic lockers in 3 sizes. Rental from $5/day with unlimited access.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Wristband-access lockers in three sizes with unlimited in-and-out access throughout your visit.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Rides_&_Slides.jpg" alt="Private cabanas" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/cabanas.jpg" alt="Private shaded cabanas beside the pool" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-umbrella-beach"></i></div>
                             <h3>Private Cabanas</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Luxury cabanas with shade, seating, mini-fridge, and dedicated service. From $80/day.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Reserved shaded suites with loungers, towel service, charging points, and dining call buttons.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Rides_&_Slides2.jpg" alt="Aqua Spa wellness center" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/spa.jpg" alt="Relaxing aqua spa lounge" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-spa"></i></div>
                             <h3>Aqua Spa</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Massages, facials, and wellness treatments. Book at guest services or online.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Short recovery massages, cooling facials, and foot treatments for guests who want a calmer break.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Rides_&_Slides3.jpg" alt="Free parking area" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/parking.jpg" alt="Organized parking and arrival zone" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-car"></i></div>
                             <h3>Parking</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Free parking for 2,000+ vehicles. VIP covered parking available for $10.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Clearly signed arrival lanes, family drop-off, coach bays, and priority parking near the entrance.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Rides_&_Slides4.jpg" alt="First aid station" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/first-aid.jpg" alt="First aid and guest care station" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-first-aid"></i></div>
                             <h3>First Aid</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">3 first aid stations with qualified nurses. Emergency response team on standby.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Three staffed care stations with trained responders, hydration support, and direct lifeguard contact.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Slides.jpg" alt="Free WiFi zones" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/wifi-lounge.jpg" alt="Poolside lounge with free WiFi zones" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-wifi"></i></div>
                             <h3>Free WiFi</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">High-speed WiFi throughout the park. Connect to "Sanjalika-Guest" network.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">High-speed coverage in lounges, restaurants, cabanas, and guest service areas.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Slides (2).jpg" alt="Changing rooms" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/changing-rooms.jpg" alt="Clean changing rooms and showers" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-shower"></i></div>
                             <h3>Changing Rooms</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Clean, spacious changing facilities with showers, hair dryers, and family rooms.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Private family rooms, rinse showers, mirrors, dryers, and accessible changing suites.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Slides3.jpg" alt="Gift shop" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/gift-shop.jpg" alt="Sanjalika gift and swim essentials shop" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-gift"></i></div>
                             <h3>Gift Shop</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Souvenirs, swimwear, sunscreen, and Sanjalika branded merchandise.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Forgotten swimwear, reef-safe sunscreen, waterproof phone pouches, and signature souvenirs.</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
                     <article class="facility-card">
-                        <div class="facility-img"><img src="assets/images/Rides_&_Slides4.jpg" alt="Accessibility services" loading="lazy"></div>
+                        <div class="facility-img"><img src="assets/images/facilities/accessibility.jpg" alt="Accessible route and wheelchair support" loading="lazy"></div>
                         <div class="facility-body">
                             <div class="facility-icon"><i class="fas fa-wheelchair"></i></div>
                             <h3>Accessibility</h3>
-                            <p style="color:var(--gray-200);font-size:0.9rem">Wheelchair paths, adapted restrooms, and companion ticket discounts available.</p>
+                            <p style="color:var(--gray-200);font-size:0.9rem">Step-free routes, adapted restrooms, pool-entry support, and companion assistance on request.</p>
                         </div>
                     </article>
                 </div>
@@ -155,6 +186,7 @@
         <div class="footer-bottom"><div class="container"><p>&copy; 2026 Sanjalika Water Park. All rights reserved.</p></div></div>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

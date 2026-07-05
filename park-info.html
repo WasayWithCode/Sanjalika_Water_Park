@@ -13,8 +13,23 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body>
-    <div class="page-loader" aria-hidden="true"><div class="loader-ring"></div><p class="loader-brand">Sanja<span>lika</span></p></div>
+<body class="is-loading">
+    <div class="aqua-preloader" role="status" aria-live="polite" aria-label="Loading Sanjalika Water Park">
+        <div class="preloader-glow" aria-hidden="true"></div>
+        <div class="preloader-ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="preloader-panel">
+            <div class="preloader-mark" aria-hidden="true">
+                <i class="fas fa-water"></i>
+                <span class="preloader-liquid"></span>
+            </div>
+            <p class="preloader-kicker">Premium Aqua Escape</p>
+            <p class="preloader-brand">Sanja<span>lika</span></p>
+            <div class="preloader-progress" aria-hidden="true"><span class="preloader-progress-fill"></span></div>
+            <p class="preloader-percent"><span data-loader-percent>0</span>%</p>
+        </div>
+        <div class="preloader-wave preloader-wave-one" aria-hidden="true"></div>
+        <div class="preloader-wave preloader-wave-two" aria-hidden="true"></div>
+    </div>
     <div class="page-transition" aria-hidden="true"></div>
 
     <nav class="navbar navbar-expand-lg premium-nav fixed-top nav-scrolled" aria-label="Main navigation">
@@ -114,6 +129,7 @@
         <div class="footer-bottom"><div class="container"><p>&copy; 2026 Sanjalika Water Park. All rights reserved.</p></div></div>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

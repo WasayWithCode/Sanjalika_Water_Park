@@ -1,55 +1,41 @@
-# 🌊 Sanjalika Water Park
+# Sanjalika Water Park
 
-A modern and responsive Water Park website built using HTML, CSS, and JavaScript.
+A premium, responsive static website for Sanjalika Water Park.
 
-## 🚀 Features
+## Highlights
 
-- 🎥 Video Background Hero Section
-- 📱 Fully Responsive Design
-- 🎨 Modern UI/UX
-- ⚡ Smooth Animations
-- 🏊 Attractions & Rides Section
-- 🎟️ Ticket Pricing
-- 🖼️ Gallery
-- 📞 Contact Form
-- 📍 Location & Google Map
-- 🌙 Clean and Interactive Interface
+- Fullscreen autoplay video hero using local files from `assets/videos/`
+- Responsive pages for home, about, park info, rides, gallery, food zone, facilities, booking, downloads, and contact
+- Local image usage across the site, including a dedicated `assets/images/facilities/` set
+- AOS, GSAP, CSS transitions, animated counters, filters, lightbox, and page transitions
+- Multi-step booking form with live summary, date validation, real-time field feedback, and confirmation modal
+- Professional downloads page rendered from `assets/js/assets-config.js`
+- Shared footer, reusable card styles, and production-oriented asset organization
 
-## 🛠️ Technologies Used
+## Run Locally
 
-- HTML5
-- CSS3
-- JavaScript (ES6)
-- Bootstrap 5
+Open `index.html` directly in a browser.
 
-## 📂 Installation
-
-Clone the repository:
+For the most reliable local testing, serve the folder with any static server, for example:
 
 ```bash
-git clone git@github.com:WasayWithCode/Sanjalika_Water_Park.git
+python -m http.server 8000
 ```
 
-Open the project folder:
+Then visit `http://localhost:8000`.
 
-```bash
-cd Sanjalika_Water_Park
+## Structure
+
+```text
+assets/
+  css/main.css
+  documents/
+  images/
+    facilities/
+    food_zone/
+  js/
+    assets-config.js
+    main.js
+  videos/
+*.html
 ```
-
-Run the project by opening `index.html` in your browser.
-
-## 📸 Screenshots
-
-_Add project screenshots here._
-
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to fork the repository and submit a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-⭐ If you like this project, don't forget to star the repository.

@@ -15,11 +15,22 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
-<body class="home-page">
-
-    <div class="page-loader" aria-hidden="true">
-        <div class="loader-ring"></div>
-        <p class="loader-brand">Sanja<span>lika</span></p>
+<body class="home-page is-loading">
+    <div class="aqua-preloader" role="status" aria-live="polite" aria-label="Loading Sanjalika Water Park">
+        <div class="preloader-glow" aria-hidden="true"></div>
+        <div class="preloader-ripples" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="preloader-panel">
+            <div class="preloader-mark" aria-hidden="true">
+                <i class="fas fa-water"></i>
+                <span class="preloader-liquid"></span>
+            </div>
+            <p class="preloader-kicker">Premium Aqua Escape</p>
+            <p class="preloader-brand">Sanja<span>lika</span></p>
+            <div class="preloader-progress" aria-hidden="true"><span class="preloader-progress-fill"></span></div>
+            <p class="preloader-percent"><span data-loader-percent>0</span>%</p>
+        </div>
+        <div class="preloader-wave preloader-wave-one" aria-hidden="true"></div>
+        <div class="preloader-wave preloader-wave-two" aria-hidden="true"></div>
     </div>
 
     <div class="page-transition" aria-hidden="true"></div>
@@ -67,8 +78,8 @@
         <div class="water-bubble water-bubble-4" aria-hidden="true"><i class="fas fa-umbrella-beach"></i></div>
         <div class="hero-content">
             <div class="hero-badge"><i class="fas fa-star" aria-hidden="true"></i> Sri Lanka's Premier Water Park</div>
-            <h1 class="hero-title">Dive Into <span class="text-gradient">Pure Luxury</span></h1>
-            <p class="hero-subtitle hero-subtitle-animated">Experience world-class thrills, crystal-clear lagoons, and unforgettable moments at Sanjalika Water Park — where every splash tells a story.</p>
+            <h1 class="hero-title">Sanjalika <span class="text-gradient">Water Park</span></h1>
+            <p class="hero-subtitle hero-subtitle-animated">A premium aquatic escape with cinematic slides, crystal lagoons, shaded cabanas, family splash zones, and unforgettable coastal energy.</p>
             <div class="hero-actions">
                 <a href="booking.html" class="btn btn-premium btn-primary-premium btn-glow btn-ripple"><i class="fas fa-ticket-alt" aria-hidden="true"></i> Book Tickets</a>
                 <a href="#welcome" class="btn btn-premium btn-outline-premium btn-ripple"><i class="fas fa-compass" aria-hidden="true"></i> Explore Park</a>
@@ -599,6 +610,7 @@
         </div>
     </footer>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

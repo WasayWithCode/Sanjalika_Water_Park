@@ -45,6 +45,9 @@ const SANJALIKA_ASSETS = {
       file: 'assets/documents/park-brochure.pdf',
       type: 'PDF',
       size: '4.2 MB',
+      pages: '16 pages',
+      updated: 'Mar 2026',
+      description: 'A polished overview of attractions, dining zones, cabanas, tickets, group packages, and seasonal highlights.',
       icon: 'fa-file-pdf',
       preview: 'Rides_&_Slides.jpg',
       downloads: 2847
@@ -56,6 +59,9 @@ const SANJALIKA_ASSETS = {
       file: 'assets/documents/park-map.pdf',
       type: 'PDF',
       size: '2.8 MB',
+      pages: '2 pages',
+      updated: 'Mar 2026',
+      description: 'Printable route map with entry points, family zones, first aid posts, dining, lockers, and accessible paths.',
       icon: 'fa-map',
       preview: 'Slides.jpg',
       downloads: 4521
@@ -67,6 +73,9 @@ const SANJALIKA_ASSETS = {
       file: 'assets/documents/safety-guide.pdf',
       type: 'PDF',
       size: '1.5 MB',
+      pages: '10 pages',
+      updated: 'Feb 2026',
+      description: 'Ride safety rules, height guidance, water quality notes, lifeguard zones, and weather procedures.',
       icon: 'fa-shield-halved',
       preview: 'Slides3.jpg',
       downloads: 1934
@@ -77,7 +86,10 @@ const SANJALIKA_ASSETS = {
       category: 'Visitor Guide',
       file: 'assets/documents/safety-guide.pdf',
       type: 'PDF',
-      size: '1.5 MB',
+      size: '1.8 MB',
+      pages: '12 pages',
+      updated: 'Mar 2026',
+      description: 'A complete pre-arrival guide covering what to bring, family services, accessibility, and daily schedule tips.',
       icon: 'fa-book-open',
       preview: 'Rides_&_Slides3.jpg',
       downloads: 3102
@@ -89,6 +101,9 @@ const SANJALIKA_ASSETS = {
       file: 'assets/documents/group-booking-form.doc',
       type: 'DOC',
       size: '256 KB',
+      pages: 'Editable DOC',
+      updated: 'Jan 2026',
+      description: 'Editable request form for school trips, corporate outings, birthdays, and groups of 20 or more guests.',
       icon: 'fa-ticket',
       preview: 'Rides.jpg',
       downloads: 876
@@ -100,6 +115,9 @@ const SANJALIKA_ASSETS = {
       file: 'assets/documents/event-inquiry.doc',
       type: 'DOC',
       size: '180 KB',
+      pages: 'Editable DOC',
+      updated: 'Jan 2026',
+      description: 'Send us the date, guest count, catering needs, and event format for private splash parties or team days.',
       icon: 'fa-scale-balanced',
       preview: 'Slides (2).jpg',
       downloads: 654
@@ -111,6 +129,9 @@ const SANJALIKA_ASSETS = {
       file: 'assets/documents/privacy-policy.pdf',
       type: 'PDF',
       size: '890 KB',
+      pages: '8 pages',
+      updated: 'Jan 2026',
+      description: 'Privacy, data handling, payment, refund, photography, and guest communication policy details.',
       icon: 'fa-file-contract',
       preview: 'Rides_&_Slides4.jpg',
       downloads: 1203
