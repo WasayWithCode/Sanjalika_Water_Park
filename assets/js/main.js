@@ -196,24 +196,66 @@ function initNavbar() {
 
   const collapse = nav.querySelector('.navbar-collapse');
   const toggler = nav.querySelector('.navbar-toggler');
+  let backdrop = document.querySelector('.mobile-nav-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('button');
+    backdrop.type = 'button';
+    backdrop.className = 'mobile-nav-backdrop';
+    backdrop.setAttribute('aria-label', 'Close navigation menu');
+    document.body.appendChild(backdrop);
+  }
+
+  const setMenuOpen = (isOpen) => {
+    nav.classList.toggle('nav-menu-open', isOpen);
+    document.body.classList.toggle('nav-overlay-active', isOpen);
+    backdrop.classList.toggle('is-visible', isOpen);
+    backdrop.setAttribute('aria-hidden', String(!isOpen));
+    collapse?.setAttribute('aria-hidden', String(!isOpen));
+    if (toggler) {
+      toggler.classList.toggle('is-active', isOpen);
+      toggler.setAttribute('aria-expanded', String(isOpen));
+    }
+  };
+
+  const closeMenu = () => {
+    if (!collapse) return;
+    const instance = bootstrap.Collapse.getOrCreateInstance(collapse, { toggle: false });
+    instance.hide();
+    setMenuOpen(false);
+  };
+
   if (collapse) {
+    collapse.setAttribute('aria-hidden', 'true');
+
     collapse.addEventListener('show.bs.collapse', () => {
-      nav.classList.add('nav-menu-open');
-      if (toggler) toggler.classList.add('is-active');
+      setMenuOpen(true);
     });
     collapse.addEventListener('hide.bs.collapse', () => {
-      nav.classList.remove('nav-menu-open');
-      if (toggler) toggler.classList.remove('is-active');
+      setMenuOpen(false);
     });
+    collapse.addEventListener('hidden.bs.collapse', () => setMenuOpen(false));
 
     collapse.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', () => {
         if (window.innerWidth < 992) {
-          const bsCollapse = bootstrap.Collapse.getInstance(collapse);
-          if (bsCollapse) bsCollapse.hide();
+          closeMenu();
         }
       });
     });
+
+    backdrop.addEventListener('click', closeMenu);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('nav-menu-open')) closeMenu();
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 992) {
+        closeMenu();
+        collapse.classList.remove('show');
+        toggler?.setAttribute('aria-expanded', 'false');
+      }
+    }, { passive: true });
   }
 }
 
@@ -1187,6 +1229,16 @@ function initResponsiveMedia() {
 
   document.querySelectorAll('img').forEach(img => {
     img.decoding = 'async';
+    if (!img.hasAttribute('sizes')) img.sizes = '(max-width: 576px) 100vw, (max-width: 992px) 50vw, 33vw';
+  });
+
+  document.querySelectorAll('video').forEach(video => {
+    if (!video.hasAttribute('preload')) video.setAttribute('preload', 'metadata');
+    video.setAttribute('playsinline', '');
+  });
+
+  document.querySelectorAll('iframe:not([loading])').forEach(iframe => {
+    iframe.loading = 'lazy';
   });
 }
 

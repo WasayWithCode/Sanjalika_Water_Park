@@ -307,7 +307,9 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow: hidden; 
+  /* padding: 3rem; */
+  margin-top: -40px;
 }
 
 .hero-video-wrap {
@@ -341,6 +343,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-content {
+  
   position: relative;
   z-index: 2;
   text-align: center;
@@ -3285,5 +3288,1044 @@ body.is-loading {
   .reveal-on-scroll {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* ============================================================
+   Full-Site Responsive Production Layer
+   Mobile, tablet, laptop, desktop refinements
+   ============================================================ */
+
+:root {
+  --page-gutter: clamp(1rem, 3vw, 2rem);
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body.nav-overlay-active {
+  overflow: hidden;
+  touch-action: none;
+}
+
+main,
+section,
+header,
+footer,
+.container,
+.container-fluid,
+.row,
+[class*="col-"],
+.glass-card,
+.attraction-card,
+.pricing-card,
+.testimonial-card,
+.facility-card,
+.restaurant-card,
+.premium-download-card,
+.download-card,
+.contact-info-card,
+.info-card,
+.newsletter-box,
+.cta-banner,
+.booking-wrapper,
+.booking-premium,
+.booking-form,
+.booking-summary,
+.downloads-grid,
+.gallery-grid,
+.map-container,
+.footer-map {
+  min-width: 0;
+}
+
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+span,
+label,
+button,
+td,
+th {
+  overflow-wrap: anywhere;
+}
+
+img,
+video,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+iframe {
+  display: block;
+}
+
+.container {
+  width: min(100% - (var(--page-gutter) * 2), 1320px);
+  max-width: 1320px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row {
+  --bs-gutter-x: clamp(1rem, 2.6vw, 1.5rem);
+  --bs-gutter-y: clamp(1rem, 2.6vw, 1.5rem);
+}
+
+.section-padding {
+  padding: clamp(3.25rem, 7vw, 6rem) 0;
+}
+
+.section-title {
+  font-size: clamp(1.95rem, 5.2vw, 3.25rem);
+}
+
+.section-subtitle {
+  width: min(100%, 660px);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.btn,
+.btn-premium,
+.filter-btn,
+.navbar-toggler,
+.counter-btn,
+.calendar-nav,
+.lightbox-close,
+.social-links a,
+.ticket-card,
+.ticket-option,
+.faq-question {
+  min-height: 44px;
+}
+
+.btn-premium,
+.filter-btn {
+  white-space: normal;
+}
+
+.premium-nav {
+  min-height: var(--nav-height);
+}
+
+.premium-nav .container {
+  width: min(100% - 1.25rem, 1400px);
+}
+
+.premium-nav .navbar-brand {
+  max-width: calc(100vw - 88px);
+  font-size: clamp(1.2rem, 3.7vw, 1.5rem);
+  white-space: nowrap;
+}
+
+.premium-nav .brand-mark {
+  flex: 0 0 auto;
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  display: block;
+  width: 100%;
+  min-height: 100dvh;
+  border: 0;
+  background: rgba(2, 12, 19, 0.62);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-nav-backdrop.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.hero-section {
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+.hero-video-wrap,
+.hero-video-wrap video,
+.hero-fallback-img {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-video-wrap video {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.hero-content {
+  width: min(100%, 940px);
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+}
+
+.hero-title {
+  font-size: clamp(2.35rem, 9vw, 5.5rem);
+}
+
+.hero-badge {
+  max-width: 100%;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.hero-actions {
+  width: 100%;
+}
+
+.page-header {
+  min-height: clamp(320px, 44vw, 460px);
+  padding-top: calc(var(--nav-height) + clamp(2.25rem, 5vw, 4rem));
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.page-header-content {
+  width: min(100% - (var(--page-gutter) * 2), 980px);
+}
+
+.breadcrumb-nav {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.glass-card,
+.pricing-card,
+.testimonial-card,
+.info-card,
+.newsletter-box,
+.cta-banner,
+.contact-info-card {
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+
+.attraction-card .card-body,
+.facility-card .facility-body,
+.download-card-body {
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.attraction-card .card-img-wrap,
+.facility-card .facility-img,
+.restaurant-card .rest-img,
+.download-card-preview,
+.summary-ticket-preview {
+  width: 100%;
+}
+
+.gallery-grid {
+  column-gap: clamp(0.85rem, 2vw, 1.25rem);
+}
+
+.gallery-item {
+  transform: translateZ(0);
+}
+
+.gallery-item img {
+  height: auto;
+  min-height: 170px;
+  object-fit: cover;
+}
+
+#welcome .position-relative > img,
+.section-navy .row .col-6 > img,
+.section-gradient .row .col-6 > img,
+.section-gradient .row .col-6.col-md-3 > img,
+.section-gradient .row .col-md-3 > img,
+.gallery-grid .gallery-item > img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.filter-tabs,
+.download-filters,
+.ride-filters {
+  max-width: 100%;
+}
+
+.lightbox {
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.lightbox img {
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.booking-wrapper,
+.booking-premium {
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.booking-progress {
+  max-width: 100%;
+}
+
+.ticket-cards,
+.ticket-selector {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 136px), 1fr));
+}
+
+.ticket-card,
+.ticket-option {
+  min-width: 0;
+}
+
+.visitor-counter {
+  width: min(100%, 220px);
+  max-width: 100%;
+}
+
+.calendar-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+.calendar-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-day {
+  min-width: 0;
+  min-height: 36px;
+}
+
+.summary-row {
+  gap: 1rem;
+}
+
+.summary-row span:last-child {
+  text-align: right;
+}
+
+.confirmation-modal {
+  padding: var(--page-gutter);
+}
+
+.confirmation-box {
+  width: min(100%, 440px);
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+}
+
+.downloads-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+}
+
+.download-card {
+  align-items: flex-start;
+}
+
+.download-meta {
+  width: 100%;
+}
+
+.help-stat,
+.contact-info-item,
+.footer-contact,
+.menu-item,
+.testimonial-author {
+  min-width: 0;
+}
+
+.hours-table {
+  table-layout: fixed;
+}
+
+.hours-table td {
+  vertical-align: top;
+}
+
+.map-container,
+.map-container iframe {
+  min-height: clamp(280px, 48vw, 420px);
+}
+
+.footer-main {
+  padding: clamp(3rem, 6vw, 4rem) 0 2rem;
+}
+
+.footer-newsletter .newsletter-form,
+.newsletter-form {
+  align-items: stretch;
+}
+
+.footer-bottom p {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+
+  .premium-nav .container {
+    width: min(100% - 3rem, 1440px);
+    max-width: 1440px;
+  }
+
+  .hero-content {
+    width: min(100%, 1020px);
+  }
+
+  .downloads-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1399px) {
+  .premium-nav .nav-link {
+    padding-left: 0.48rem !important;
+    padding-right: 0.48rem !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  :root {
+    --nav-height: 76px;
+  }
+
+  .premium-nav .navbar-brand {
+    font-size: 1.28rem;
+  }
+
+  .premium-nav .brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .booking-wrapper,
+  .booking-premium {
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  }
+
+  .download-card-body {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 991px) {
+  :root {
+    --nav-height: 72px;
+  }
+
+  .premium-nav {
+    padding: 0.65rem 0;
+  }
+
+  .premium-nav .navbar-collapse {
+    position: fixed;
+    top: calc(var(--nav-height) + 0.55rem);
+    left: var(--page-gutter);
+    right: var(--page-gutter);
+    z-index: 1055;
+    display: block !important;
+    max-height: min(78dvh, 620px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem;
+    border: 1px solid rgba(127, 255, 212, 0.2);
+    border-radius: 8px;
+    background: rgba(5, 19, 31, 0.97);
+    box-shadow: 0 28px 90px rgba(0, 0, 0, 0.48);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-14px) scale(0.98);
+    transition: opacity 0.28s ease, visibility 0.28s ease, transform 0.28s ease;
+  }
+
+  .premium-nav .navbar-collapse.show,
+  .premium-nav .navbar-collapse.collapsing {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+
+  .premium-nav .navbar-collapse.collapsing {
+    height: auto !important;
+    transition: opacity 0.28s ease, visibility 0.28s ease, transform 0.28s ease;
+  }
+
+  .mobile-menu.show {
+    margin-top: 0;
+    padding: 1rem;
+  }
+
+  .premium-nav .navbar-nav {
+    gap: 0.3rem;
+  }
+
+  .premium-nav .nav-link,
+  .premium-nav .btn-nav-cta {
+    min-height: 46px;
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px;
+  }
+
+  .btn-nav-cta {
+    margin-top: 0.35rem;
+  }
+
+  .hero-section {
+    min-height: 100svh;
+  }
+
+  .hero-content {
+    padding-top: calc(var(--nav-height) + 2rem);
+    padding-bottom: 5.25rem;
+  }
+
+  .hero-video-wrap video {
+    object-position: center top;
+  }
+
+  .page-header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .booking-wrapper,
+  .booking-premium {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-summary {
+    position: static;
+    order: -1;
+  }
+
+  .pricing-reference {
+    display: none;
+  }
+
+  .downloads-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .download-card-body {
+    min-height: auto;
+  }
+
+  .map-container,
+  .map-container iframe {
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-snap-row {
+    grid-auto-columns: minmax(240px, 82vw);
+    margin-left: calc(var(--page-gutter) * -0.25);
+    margin-right: calc(var(--page-gutter) * -0.25);
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-gutter: 1rem;
+    --nav-height: 70px;
+  }
+
+  .container {
+    width: min(100% - 2rem, 540px);
+  }
+
+  .premium-nav .container {
+    width: min(100% - 1rem, 540px);
+  }
+
+  .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-content {
+    padding-top: calc(var(--nav-height) + 1rem);
+    padding-bottom: 5.5rem;
+  }
+
+  .hero-title {
+    line-height: 1.08;
+  }
+
+  .hero-actions .btn-premium {
+    width: min(100%, 340px);
+    max-width: none;
+  }
+
+  .wave-divider {
+    margin-top: -2.5rem;
+  }
+
+  .page-header {
+    min-height: 310px;
+  }
+
+  .gallery-grid {
+    columns: 2;
+  }
+
+  #welcome .position-relative > .glass-card {
+    position: static !important;
+    max-width: none !important;
+    margin: 1rem 0 0 !important;
+  }
+
+  .section-navy .row .col-6 > img,
+  .section-gradient .row .col-6 > img,
+  .section-gradient .row .col-6.col-md-3 > img,
+  .section-gradient .row .col-md-3 > img {
+    height: clamp(140px, 34vw, 190px) !important;
+    margin-top: 0 !important;
+  }
+
+  .filter-tabs,
+  .download-filters,
+  .ride-filters {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    padding-bottom: 0.7rem;
+    margin-left: calc(var(--page-gutter) * -0.25);
+    margin-right: calc(var(--page-gutter) * -0.25);
+  }
+
+  .filter-btn {
+    scroll-snap-align: start;
+  }
+
+  .booking-progress {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    padding: 0.25rem 0.25rem 0.85rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-step {
+    min-width: 62px;
+    scroll-snap-align: start;
+  }
+
+  .progress-line {
+    width: 24px;
+    min-width: 24px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .step-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .booking-panel-title {
+    font-size: 1.25rem;
+  }
+
+  .ticket-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .ticket-card {
+    padding: 1rem 0.65rem;
+  }
+
+  .visitor-counter {
+    width: 100%;
+  }
+
+  .calendar-wrap {
+    padding: 0.8rem;
+  }
+
+  .calendar-day {
+    min-height: 34px;
+    font-size: 0.78rem;
+  }
+
+  .booking-nav-buttons {
+    gap: 0.75rem;
+  }
+
+  .booking-nav-buttons .btn {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .downloads-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .download-card {
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .download-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .hours-table,
+  .hours-table tbody,
+  .hours-table tr,
+  .hours-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .hours-table tr {
+    padding: 0.85rem 0;
+  }
+
+  .hours-table td {
+    padding: 0.1rem 0;
+  }
+
+  .hours-table td:last-child {
+    text-align: left;
+  }
+
+  .menu-item {
+    align-items: flex-start;
+  }
+
+  .footer-desc {
+    max-width: none;
+  }
+
+  .footer-newsletter {
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .gallery-grid {
+    columns: 1;
+  }
+}
+
+@media (max-width: 575px) {
+  .premium-nav .navbar-brand {
+    font-size: 1.14rem;
+  }
+
+  .premium-nav .navbar-toggler {
+    width: 44px;
+    height: 42px;
+  }
+
+  .premium-nav .navbar-collapse {
+    top: calc(var(--nav-height) + 0.35rem);
+    left: 0.75rem;
+    right: 0.75rem;
+    max-height: calc(100dvh - var(--nav-height) - 1rem);
+  }
+
+  .hero-title {
+    font-size: clamp(2.15rem, 12vw, 3.35rem);
+  }
+
+  .hero-badge {
+    padding: 0.48rem 0.85rem;
+    font-size: 0.76rem;
+  }
+
+  .hero-subtitle,
+  .section-subtitle {
+    font-size: 0.96rem;
+  }
+
+  .glass-card,
+  .pricing-card,
+  .testimonial-card,
+  .info-card,
+  .newsletter-box,
+  .cta-banner,
+  .contact-info-card {
+    padding: 1.1rem;
+  }
+
+  .attraction-card .card-badge,
+  .offer-badge,
+  .file-type-badge {
+    max-width: calc(100% - 1.5rem);
+    white-space: normal;
+  }
+
+  .contact-info-item {
+    gap: 0.75rem;
+  }
+
+  .contact-info-item .icon-wrap,
+  .help-stat i {
+    width: 44px;
+    height: 44px;
+  }
+
+  .footer-main .row > [class*="col-"] {
+    width: 100%;
+  }
+
+  .footer-links {
+    columns: 2;
+    column-gap: 1rem;
+  }
+
+  .footer-bottom {
+    padding-bottom: 5rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .container {
+    width: min(100% - 1.5rem, 100%);
+  }
+
+  .section-label {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 0.6rem;
+    font-size: 0.68rem;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    width: 16px;
+  }
+
+  .hero-actions .btn-premium,
+  .newsletter-form .btn,
+  .btn-download {
+    width: 100%;
+  }
+
+  .ticket-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-card {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    grid-template-areas:
+      "icon name price"
+      "icon age price";
+    align-items: center;
+    column-gap: 0.75rem;
+    text-align: left;
+  }
+
+  .ticket-card-icon {
+    grid-area: icon;
+    margin: 0;
+  }
+
+  .ticket-card-name {
+    grid-area: name;
+  }
+
+  .ticket-card-age {
+    grid-area: age;
+    margin: 0.1rem 0 0;
+  }
+
+  .ticket-card-price {
+    grid-area: price;
+    margin-top: 0;
+    text-align: right;
+  }
+
+  .summary-row {
+    font-size: 0.86rem;
+  }
+
+  .summary-glass .summary-row {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .summary-header,
+  .summary-perks {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .summary-ticket-preview {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .calendar-grid {
+    gap: 0.25rem;
+  }
+
+  .calendar-day {
+    min-height: 32px;
+  }
+
+  .download-card,
+  .premium-download-card {
+    border-radius: 8px;
+  }
+
+  .footer-links {
+    columns: 1;
+  }
+}
+
+@media (max-width: 375px) {
+  :root {
+    --page-gutter: 0.85rem;
+  }
+
+  .premium-nav .navbar-brand {
+    font-size: 1.05rem;
+  }
+
+  .premium-nav .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 12.5vw, 2.9rem);
+  }
+
+  .btn-premium {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+
+  .step-label {
+    font-size: 0.66rem;
+  }
+
+  .calendar-wrap {
+    padding-left: 0.55rem;
+    padding-right: 0.55rem;
+  }
+
+  .calendar-day {
+    min-height: 30px;
+    font-size: 0.72rem;
+  }
+
+  .download-meta {
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 320px) {
+  :root {
+    --page-gutter: 0.7rem;
+    --nav-height: 66px;
+  }
+
+  .premium-nav .navbar-brand {
+    font-size: 0.98rem;
+  }
+
+  .premium-nav .brand-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 0.95rem;
+  }
+
+  .premium-nav .navbar-toggler {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hero-badge {
+    font-size: 0.7rem;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .section-title {
+    font-size: 1.7rem;
+  }
+
+  .glass-card,
+  .pricing-card,
+  .testimonial-card,
+  .info-card,
+  .newsletter-box,
+  .cta-banner,
+  .contact-info-card,
+  .booking-glass {
+    padding: 0.9rem;
+  }
+
+  .ticket-card {
+    grid-template-columns: 40px minmax(0, 1fr);
+    grid-template-areas:
+      "icon name"
+      "icon age"
+      "icon price";
+  }
+
+  .ticket-card-price {
+    text-align: left;
+  }
+
+  .calendar-day {
+    min-height: 28px;
+    font-size: 0.68rem;
+  }
+
+  .section-navy .row .col-6 > img,
+  .section-gradient .row .col-6 > img,
+  .section-gradient .row .col-6.col-md-3 > img,
+  .section-gradient .row .col-md-3 > img {
+    height: 132px !important;
+  }
+
+  .toast-container {
+    left: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .scroll-to-top {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: 44px;
+    height: 44px;
   }
 }
