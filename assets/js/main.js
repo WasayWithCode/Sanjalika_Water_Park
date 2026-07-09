@@ -1089,12 +1089,8 @@ function initDownloads() {
 
       grid.querySelectorAll('.premium-download-card').forEach(card => {
         const cat = card.dataset.category;
-        const show = filter === 'all' || cat === filter ||
-          (filter === 'Brochure' && cat === 'Brochure') ||
-          (filter === 'Park Map' && cat === 'Park Map') ||
-          (filter === 'Visitor Guide' && (cat === 'Visitor Guide' || cat === 'Ticket Information')) ||
-          (filter === 'Safety Guide' && cat === 'Safety Guide') ||
-          (filter === 'Policies' && (cat === 'Policies' || cat === 'Rules & Regulations'));
+        // Simple exact match — category values in assets-config match filter data-filter values exactly
+        const show = filter === 'all' || cat === filter;
         card.style.display = show ? '' : 'none';
         if (show && typeof gsap !== 'undefined') {
           gsap.fromTo(card, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.05 });
@@ -1107,35 +1103,282 @@ function initDownloads() {
   initCardTilt();
 }
 
-/* ── Contact Form ── */
+/* ============================================================
+   CONTACT FORM — Advanced Real-time Validation
+   Tasks 3 + 4: validation engine, toast, spinner, submit guard
+   ============================================================ */
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    let valid = true;
+  // ── Element references ──────────────────────────────────────
+  const nameInput    = form.querySelector('#contactName');
+  const emailInput   = form.querySelector('#contactEmail');
+  const subjectInput = form.querySelector('#contactSubject');
+  const msgInput     = form.querySelector('#contactMessage');
+  const submitBtn    = document.getElementById('cfSubmitBtn');
+  const charCurrent  = document.getElementById('cfCharCurrent');
+  const charCounter  = document.getElementById('contactMessageCount');
+  const chips        = form.querySelectorAll('.cf-chip');
 
-    ['contactName', 'contactEmail', 'contactMessage'].forEach(id => {
-      const input = form.querySelector(`#${id}`);
-      const error = form.querySelector(`#${id}Error`);
-      if (!input.value.trim()) {
-        input.classList.add('error');
-        shakeField(input);
-        if (error) error.classList.add('show');
-        valid = false;
-      } else {
-        input.classList.remove('error');
-        input.classList.add('success');
-        if (error) error.classList.remove('show');
+  // Guard: exit silently if form elements are missing
+  if (!nameInput || !emailInput || !subjectInput || !msgInput || !submitBtn) return;
+
+  // Track whether a submission is in progress (prevents double-submit)
+  let isSubmitting = false;
+
+  // ── Pure validation rules ────────────────────────────────────
+  const CF_RULES = {
+    name(v) {
+      const s = v.trim();
+      if (!s)          return 'Full name is required.';
+      if (s.length < 3)  return 'Name must be at least 3 characters.';
+      if (s.length > 50) return 'Name cannot exceed 50 characters.';
+      if (!/^[A-Za-z\s''\-\.]+$/.test(s)) return 'Only letters, spaces, and hyphens are allowed.';
+      return null; // null = valid
+    },
+    email(v) {
+      const s = v.trim();
+      if (!s) return 'Email address is required.';
+      // RFC-5321 compatible pattern
+      const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+      if (!re.test(s)) return 'Please enter a valid email address.';
+      if (s.includes('..') || s.endsWith('.')) return 'Please enter a valid email address.';
+      return null;
+    },
+    subject(v) {
+      const s = v.trim();
+      if (!s)           return 'Subject is required.';
+      if (s.length < 5)  return 'Subject must be at least 5 characters.';
+      if (s.length > 100) return 'Subject cannot exceed 100 characters.';
+      return null;
+    },
+    message(v) {
+      const s = v.trim();
+      if (!s)            return 'Message is required.';
+      if (s.length < 20)  return 'Message must be at least 20 characters.';
+      if (s.length > 500) return 'Message cannot exceed 500 characters.';
+      return null;
+    }
+  };
+
+  // ── Field config map (input → rule → error element → field wrapper) ──
+  const FIELDS = [
+    { input: nameInput,    rule: 'name',    errorId: 'contactNameError',    wrapperId: 'cf-field-name'    },
+    { input: emailInput,   rule: 'email',   errorId: 'contactEmailError',   wrapperId: 'cf-field-email'   },
+    { input: subjectInput, rule: 'subject', errorId: 'contactSubjectError', wrapperId: 'cf-field-subject' },
+    { input: msgInput,     rule: 'message', errorId: 'contactMessageError', wrapperId: 'cf-field-message' }
+  ];
+
+  // ── Utility: get wrapper element ────────────────────────────
+  function getWrapper(field) {
+    return document.getElementById(field.wrapperId);
+  }
+
+  // ── Utility: get error element ──────────────────────────────
+  function getErrorEl(field) {
+    return document.getElementById(field.errorId);
+  }
+
+  // ── Apply valid/invalid UI to a single field ─────────────────
+  function applyState(field, errorMsg, shake) {
+    const wrapper = getWrapper(field);
+    const errorEl = getErrorEl(field);
+    if (!wrapper) return;
+
+    if (errorMsg) {
+      // ── INVALID ──
+      wrapper.classList.remove('cf-valid', 'cf-shake');
+      wrapper.classList.add('cf-invalid');
+      if (errorEl) errorEl.textContent = errorMsg;
+
+      if (shake) {
+        // force reflow so the animation restarts even if already shaking
+        void wrapper.offsetWidth;
+        wrapper.classList.add('cf-shake');
+        wrapper.addEventListener('animationend', () => wrapper.classList.remove('cf-shake'), { once: true });
       }
+    } else {
+      // ── VALID ──
+      wrapper.classList.remove('cf-invalid', 'cf-shake');
+      wrapper.classList.add('cf-valid');
+      if (errorEl) errorEl.textContent = '';
+    }
+  }
+
+  // ── Validate one field, return true if valid ─────────────────
+  function validateField(field, shake = false) {
+    const errorMsg = CF_RULES[field.rule](field.input.value);
+    applyState(field, errorMsg, shake);
+    return errorMsg === null;
+  }
+
+  // ── Validate all fields, return true only if all pass ────────
+  // Using reduce so every field is evaluated (shows all errors at once,
+  // not just the first one) even when an early field is already invalid.
+  function validateAll(shake = false) {
+    let allValid = true;
+    FIELDS.forEach(field => {
+      if (!validateField(field, shake)) allValid = false;
+    });
+    return allValid;
+  }
+
+  // ── Update submit button enabled/disabled state ──────────────
+  function refreshSubmitState() {
+    // Only enable when all fields satisfy their rule
+    const allValid = FIELDS.every(f => CF_RULES[f.rule](f.input.value) === null);
+    submitBtn.disabled      = !allValid || isSubmitting;
+    submitBtn.setAttribute('aria-disabled', String(!allValid || isSubmitting));
+  }
+
+  // ── Character counter for message ────────────────────────────
+  function updateCharCounter() {
+    const len = msgInput.value.length;
+    if (charCurrent) charCurrent.textContent = len;
+
+    if (!charCounter) return;
+    charCounter.classList.remove('cf-counter-warn', 'cf-counter-danger');
+    if (len >= 480)      charCounter.classList.add('cf-counter-danger');
+    else if (len >= 400) charCounter.classList.add('cf-counter-warn');
+  }
+
+  // ── Bootstrap Toast helper ────────────────────────────────────
+  function showContactToast(message, type = 'success') {
+    const toastEl  = document.getElementById('cfToast');
+    const msgEl    = document.getElementById('cfToastMessage');
+    if (!toastEl || !msgEl) return;
+
+    // Set type class (success / error)
+    toastEl.classList.remove('cf-toast-success', 'cf-toast-error');
+    toastEl.classList.add(`cf-toast-${type}`);
+
+    // Update message text
+    msgEl.textContent = message;
+
+    // Show via Bootstrap Toast API
+    const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl, {
+      autohide: true,
+      delay  : type === 'error' ? 6000 : 5000
+    });
+    bsToast.show();
+  }
+
+  // ── Submit button loading state helpers ───────────────────────
+  function setLoading(loading) {
+    const idleEl    = submitBtn.querySelector('.cf-btn-idle');
+    const loadingEl = submitBtn.querySelector('.cf-btn-loading');
+
+    isSubmitting        = loading;
+    submitBtn.disabled  = loading;
+    submitBtn.setAttribute('aria-disabled', String(loading));
+
+    if (idleEl)    idleEl.hidden    =  loading;
+    if (loadingEl) loadingEl.hidden = !loading;
+  }
+
+  // ── Reset all validation state ────────────────────────────────
+  function resetValidation() {
+    FIELDS.forEach(field => {
+      const wrapper = getWrapper(field);
+      const errorEl = getErrorEl(field);
+      if (wrapper) wrapper.classList.remove('cf-valid', 'cf-invalid', 'cf-shake');
+      if (errorEl)  errorEl.textContent = '';
+    });
+    // Reset char counter
+    if (charCurrent) charCurrent.textContent = '0';
+    if (charCounter) charCounter.classList.remove('cf-counter-warn', 'cf-counter-danger');
+    // Reset chips
+    chips.forEach(c => c.classList.remove('cf-chip-active'));
+  }
+
+  // ── Real-time: validate on input (after first blur) ──────────
+  // We use a "touched" set so errors don't fire before the user
+  // has interacted with a field at all.
+  const touched = new Set();
+
+  FIELDS.forEach(field => {
+    // Mark touched + validate on blur
+    field.input.addEventListener('blur', () => {
+      touched.add(field.rule);
+      validateField(field);
+      refreshSubmitState();
     });
 
-    if (valid) {
-      showToast('Message sent successfully! We will respond within 24 hours.', 'success');
-      form.reset();
+    // Live validate on every keystroke, but only once touched
+    field.input.addEventListener('input', () => {
+      if (touched.has(field.rule)) {
+        validateField(field);
+      }
+      if (field.rule === 'message') updateCharCounter();
+      refreshSubmitState();
+    });
+  });
+
+  // ── Subject quick-pick chips ──────────────────────────────────
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      // Toggle active class
+      chips.forEach(c => c.classList.remove('cf-chip-active'));
+      chip.classList.add('cf-chip-active');
+
+      // Fill subject input
+      subjectInput.value = chip.dataset.subject;
+
+      // Mark as touched and validate immediately
+      touched.add('subject');
+      validateField(FIELDS.find(f => f.rule === 'subject'));
+      refreshSubmitState();
+    });
+  });
+
+  // ── Form submit ───────────────────────────────────────────────
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Prevent double submission
+    if (isSubmitting) return;
+
+    // Mark all fields as touched so errors become visible
+    FIELDS.forEach(f => touched.add(f.rule));
+
+    // Full validation pass with shake on invalid fields
+    const allValid = validateAll(true);
+
+    if (!allValid) {
+      showContactToast('Please fix the errors highlighted below.', 'error');
+      // Focus the first invalid field for accessibility
+      const firstInvalid = FIELDS.find(f => CF_RULES[f.rule](f.input.value) !== null);
+      if (firstInvalid) firstInvalid.input.focus();
+      return;
+    }
+
+    // ── Show loading ──
+    setLoading(true);
+
+    // Simulate async network request (replace with fetch() in production)
+    await new Promise(resolve => setTimeout(resolve, 1600));
+
+    // ── Success ──
+    setLoading(false);
+    showContactToast('Message sent! We\'ll get back to you within 24 hours.', 'success');
+
+    // Reset form + validation state
+    form.reset();
+    resetValidation();
+    refreshSubmitState();
+
+    // Smooth scroll back to top of form for acknowledgement
+    const card = document.querySelector('.cf-card');
+    if (card) {
+      const navHeight = document.querySelector('.premium-nav')?.offsetHeight || 76;
+      const top = card.getBoundingClientRect().top + window.scrollY - navHeight - 20;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   });
+
+  // ── Initial state: disable submit until valid ─────────────────
+  refreshSubmitState();
 }
 
 document.addEventListener('DOMContentLoaded', initContactForm);

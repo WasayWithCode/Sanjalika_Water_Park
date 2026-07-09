@@ -64,7 +64,20 @@
         </div>
     </header>
 
-    <section class="section-padding section-dark">
+    <!-- ── Bootstrap Toast (contact form success) ── -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11000;" aria-live="polite" aria-atomic="true">
+        <div id="cfToast" class="toast cf-toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+            <div class="d-flex">
+                <div class="toast-body cf-toast-body" id="cfToastBody">
+                    <span class="cf-toast-icon" id="cfToastIcon" aria-hidden="true"></span>
+                    <span id="cfToastMessage">Message sent!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <section class="section-padding cf-section">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-5" data-aos="fade-right">
@@ -96,39 +109,167 @@
                 </div>
 
                 <div class="col-lg-7" data-aos="fade-left">
-                    <form id="contactForm" class="contact-form glass-card" novalidate>
-                        <h3 class="mb-4">Send a Message</h3>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="contactName">Full Name</label>
-                                <input type="text" id="contactName" name="name" placeholder="Your name" required autocomplete="name">
-                                <span class="form-error" id="contactNameError">Please enter your name</span>
+                    <!-- ── Contact Form ── -->
+                    <div class="cf-card">
+                        <!-- Card header -->
+                        <div class="cf-card-header">
+                            <div class="cf-header-icon" aria-hidden="true">
+                                <i class="fas fa-paper-plane"></i>
                             </div>
-                            <div class="col-md-6">
-                                <label for="contactEmail">Email</label>
-                                <input type="email" id="contactEmail" name="email" placeholder="your@email.com" required autocomplete="email">
-                                <span class="form-error" id="contactEmailError">Please enter a valid email</span>
-                            </div>
-                            <div class="col-12">
-                                <label for="contactSubject">Subject</label>
-                                <select id="contactSubject" name="subject">
-                                    <option value="general">General Inquiry</option>
-                                    <option value="booking">Booking Support</option>
-                                    <option value="groups">Group Bookings</option>
-                                    <option value="events">Events &amp; Parties</option>
-                                    <option value="feedback">Feedback</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="contactMessage">Message</label>
-                                <textarea id="contactMessage" name="message" rows="5" placeholder="How can we help you?" required></textarea>
-                                <span class="form-error" id="contactMessageError">Please enter your message</span>
-                            </div>
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-premium btn-primary-premium btn-ripple"><i class="fas fa-paper-plane"></i> Send Message</button>
+                            <div>
+                                <h3 class="cf-card-title">Send a Message</h3>
+                                <p class="cf-card-subtitle">We typically reply within 24 hours</p>
                             </div>
                         </div>
-                    </form>
+
+                        <form id="contactForm" class="cf-form" novalidate autocomplete="off" aria-label="Contact form">
+
+                            <!-- Row 1: Name + Email -->
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <!-- Name field -->
+                                    <div class="cf-field" id="cf-field-name">
+                                        <div class="cf-input-wrap">
+                                            <span class="cf-input-icon" aria-hidden="true"><i class="fas fa-user"></i></span>
+                                            <input
+                                                type="text"
+                                                id="contactName"
+                                                name="name"
+                                                class="cf-input"
+                                                placeholder=" "
+                                                required
+                                                autocomplete="name"
+                                                maxlength="50"
+                                                aria-required="true"
+                                                aria-describedby="contactNameError"
+                                            >
+                                            <label for="contactName" class="cf-label">Full Name</label>
+                                            <span class="cf-status-icon" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="cf-feedback" id="contactNameError" role="alert" aria-live="polite"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <!-- Email field -->
+                                    <div class="cf-field" id="cf-field-email">
+                                        <div class="cf-input-wrap">
+                                            <span class="cf-input-icon" aria-hidden="true"><i class="fas fa-envelope"></i></span>
+                                            <input
+                                                type="email"
+                                                id="contactEmail"
+                                                name="email"
+                                                class="cf-input"
+                                                placeholder=" "
+                                                required
+                                                autocomplete="email"
+                                                aria-required="true"
+                                                aria-describedby="contactEmailError"
+                                            >
+                                            <label for="contactEmail" class="cf-label">Email Address</label>
+                                            <span class="cf-status-icon" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="cf-feedback" id="contactEmailError" role="alert" aria-live="polite"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Subject -->
+                            <div class="row g-3 mt-0">
+                                <div class="col-12">
+                                    <!-- Subject field -->
+                                    <div class="cf-field" id="cf-field-subject">
+                                        <div class="cf-input-wrap">
+                                            <span class="cf-input-icon" aria-hidden="true"><i class="fas fa-tag"></i></span>
+                                            <input
+                                                type="text"
+                                                id="contactSubject"
+                                                name="subject"
+                                                class="cf-input"
+                                                placeholder=" "
+                                                required
+                                                minlength="5"
+                                                maxlength="100"
+                                                aria-required="true"
+                                                aria-describedby="contactSubjectError"
+                                            >
+                                            <label for="contactSubject" class="cf-label">Subject</label>
+                                            <span class="cf-status-icon" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="cf-feedback" id="contactSubjectError" role="alert" aria-live="polite"></div>
+                                        <!-- Quick-pick subject chips -->
+                                        <div class="cf-chips" role="group" aria-label="Quick subject suggestions">
+                                            <button type="button" class="cf-chip" data-subject="General Inquiry">General Inquiry</button>
+                                            <button type="button" class="cf-chip" data-subject="Booking Support">Booking Support</button>
+                                            <button type="button" class="cf-chip" data-subject="Group Bookings">Group Bookings</button>
+                                            <button type="button" class="cf-chip" data-subject="Events &amp; Parties">Events &amp; Parties</button>
+                                            <button type="button" class="cf-chip" data-subject="Feedback">Feedback</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Message -->
+                            <div class="row g-3 mt-0">
+                                <div class="col-12">
+                                    <!-- Message field -->
+                                    <div class="cf-field" id="cf-field-message">
+                                        <div class="cf-input-wrap cf-textarea-wrap">
+                                            <span class="cf-input-icon cf-textarea-icon" aria-hidden="true"><i class="fas fa-comment-dots"></i></span>
+                                            <textarea
+                                                id="contactMessage"
+                                                name="message"
+                                                class="cf-input cf-textarea"
+                                                placeholder=" "
+                                                required
+                                                rows="5"
+                                                minlength="20"
+                                                maxlength="500"
+                                                aria-required="true"
+                                                aria-describedby="contactMessageError contactMessageCount"
+                                            ></textarea>
+                                            <label for="contactMessage" class="cf-label cf-label-textarea">Message</label>
+                                            <span class="cf-status-icon cf-status-textarea" aria-hidden="true"></span>
+                                        </div>
+                                        <div class="cf-message-footer">
+                                            <div class="cf-feedback" id="contactMessageError" role="alert" aria-live="polite"></div>
+                                            <div class="cf-char-counter" id="contactMessageCount" aria-live="polite">
+                                                <span id="cfCharCurrent">0</span>/500
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="cf-submit-row">
+                                <button
+                                    type="submit"
+                                    id="cfSubmitBtn"
+                                    class="btn btn-premium btn-primary-premium btn-ripple cf-submit-btn"
+                                    disabled
+                                    aria-disabled="true"
+                                >
+                                    <!-- Idle state -->
+                                    <span class="cf-btn-idle">
+                                        <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                                        Send Message
+                                    </span>
+                                    <!-- Loading state (hidden by default) -->
+                                    <span class="cf-btn-loading" hidden aria-hidden="true">
+                                        <span class="cf-spinner" role="status" aria-label="Sending"></span>
+                                        Sending…
+                                    </span>
+                                </button>
+                                <p class="cf-privacy-note">
+                                    <i class="fas fa-shield-halved" aria-hidden="true"></i>
+                                    Your information is kept private and never shared.
+                                </p>
+                            </div>
+
+                        </form>
+                    </div>
+                    <!-- ── End Contact Form ── -->
                 </div>
             </div>
 

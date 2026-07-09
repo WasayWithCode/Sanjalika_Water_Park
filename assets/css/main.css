@@ -4329,3 +4329,710 @@ iframe {
     height: 44px;
   }
 }
+
+/* ============================================================
+   CONTACT FORM — Premium Redesign
+   Glassmorphism · Floating Labels · Real-time Validation
+   ============================================================ */
+
+/* ── Section background ── */
+.cf-section {
+  background:
+    radial-gradient(ellipse at 15% 30%, rgba(0, 229, 200, 0.07) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 70%, rgba(0, 180, 216, 0.06) 0%, transparent 40%),
+    linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-deep) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle animated orb behind form */
+.cf-section::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: -8%;
+  width: clamp(260px, 40vw, 520px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 200, 0.06), transparent 65%);
+  pointer-events: none;
+  animation: cfOrbPulse 8s ease-in-out infinite;
+}
+
+.cf-section::after {
+  content: '';
+  position: absolute;
+  bottom: 5%;
+  left: -6%;
+  width: clamp(180px, 28vw, 380px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.05), transparent 65%);
+  pointer-events: none;
+  animation: cfOrbPulse 10s ease-in-out infinite reverse;
+}
+
+@keyframes cfOrbPulse {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.7; }
+  50%       { transform: scale(1.12) translateY(-20px); opacity: 1; }
+}
+
+/* ── Fade-in animation for the whole form card ── */
+@keyframes cfFadeIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Card wrapper ── */
+.cf-card {
+  background: rgba(10, 31, 61, 0.60);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(0, 229, 200, 0.18);
+  border-radius: 16px;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  animation: cfFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* inner top-edge shimmer */
+.cf-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 200, 0.45), transparent);
+  pointer-events: none;
+}
+
+/* hover lift */
+.cf-card:hover {
+  border-color: rgba(0, 229, 200, 0.30);
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(0, 229, 200, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* ── Card header ── */
+.cf-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(0, 229, 200, 0.12);
+}
+
+.cf-header-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--aqua), var(--cyan));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--navy-deep);
+  box-shadow: 0 6px 24px rgba(0, 229, 200, 0.35);
+}
+
+.cf-card-title {
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+  margin: 0 0 0.15rem;
+  color: var(--white);
+}
+
+.cf-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+/* ── Form ── */
+.cf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* override Bootstrap row gap inside form */
+.cf-form .row { margin-bottom: 0; }
+
+/* ── Individual field wrapper ── */
+.cf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Input wrap (positions icon + floating label + status) ── */
+.cf-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Prefix icon ── */
+.cf-input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  font-size: 0.95rem;
+  pointer-events: none;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+/* textarea: pin icon to top */
+.cf-textarea-wrap .cf-textarea-icon {
+  top: 1.1rem;
+  transform: none;
+}
+
+/* ── The actual input / textarea ── */
+.cf-input {
+  width: 100%;
+  padding: 1.35rem 2.75rem 0.55rem 2.85rem; /* top room for floating label */
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 229, 200, 0.18);
+  border-radius: 10px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  outline: none;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  min-height: 56px;
+  -webkit-appearance: none;
+  appearance: none;
+  /* ensure placeholder is invisible (we use it only to trigger :not(:placeholder-shown)) */
+  color-scheme: dark;
+}
+
+.cf-textarea {
+  min-height: 130px;
+  resize: vertical;
+  padding-top: 1.5rem;
+  padding-bottom: 0.75rem;
+}
+
+/* remove autofill chrome yellow tint */
+.cf-input:-webkit-autofill,
+.cf-input:-webkit-autofill:hover,
+.cf-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px rgba(10, 31, 61, 0.92) inset !important;
+  -webkit-text-fill-color: var(--white) !important;
+  border-color: rgba(0, 229, 200, 0.28) !important;
+}
+
+/* ── Floating label ── */
+.cf-label {
+  position: absolute;
+  left: 2.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  color: var(--gray-400);
+  pointer-events: none;
+  transition:
+    top 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    font-size 0.25s ease,
+    color 0.25s ease;
+  white-space: nowrap;
+  z-index: 1;
+  line-height: 1;
+}
+
+.cf-label-textarea {
+  top: 1.4rem;
+  transform: none;
+}
+
+/* float up when input has content OR is focused */
+.cf-input:focus ~ .cf-label,
+.cf-input:not(:placeholder-shown) ~ .cf-label {
+  top: 0.45rem;
+  transform: translateY(0);
+  font-size: 0.72rem;
+  color: var(--aqua);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* textarea: float from fixed top position */
+.cf-textarea:focus ~ .cf-label-textarea,
+.cf-textarea:not(:placeholder-shown) ~ .cf-label-textarea {
+  top: 0.3rem;
+  font-size: 0.72rem;
+  color: var(--aqua);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Focus state ── */
+.cf-input:focus {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--aqua);
+  box-shadow:
+    0 0 0 3px rgba(0, 229, 200, 0.14),
+    0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.cf-input:focus ~ .cf-input-icon,
+.cf-input:focus + .cf-input-wrap .cf-input-icon {
+  color: var(--aqua);
+}
+
+/* icon color on focus (sibling approach doesn't work; use field state classes instead) */
+.cf-field:focus-within .cf-input-icon {
+  color: var(--aqua);
+}
+
+/* ── Status icon (check / x) ── */
+.cf-status-icon {
+  position: absolute;
+  right: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease, color 0.25s ease;
+  z-index: 2;
+}
+
+.cf-textarea-wrap .cf-status-textarea {
+  top: 1.2rem;
+  transform: none;
+}
+
+/* valid state */
+.cf-field.cf-valid .cf-status-icon {
+  opacity: 1;
+  color: #51cf66;
+}
+
+.cf-field.cf-valid .cf-status-icon::before {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  content: '\f058'; /* fa-circle-check */
+}
+
+/* invalid state */
+.cf-field.cf-invalid .cf-status-icon {
+  opacity: 1;
+  color: #ff6b6b;
+}
+
+.cf-field.cf-invalid .cf-status-icon::before {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  content: '\f057'; /* fa-circle-xmark */
+}
+
+/* ── Border colour on validation states ── */
+.cf-field.cf-valid .cf-input {
+  border-color: rgba(81, 207, 102, 0.55);
+  box-shadow: 0 0 0 3px rgba(81, 207, 102, 0.10);
+}
+
+.cf-field.cf-invalid .cf-input {
+  border-color: rgba(255, 107, 107, 0.60);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.10);
+}
+
+/* ── Animated error message ── */
+.cf-feedback {
+  font-size: 0.78rem;
+  color: #ff6b6b;
+  min-height: 1.1em;
+  margin-top: 0.3rem;
+  padding-left: 0.2rem;
+  overflow: hidden;
+  /* hide when empty */
+  display: block;
+}
+
+.cf-feedback:empty { margin-top: 0; min-height: 0; }
+
+@keyframes cfFeedbackIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cf-feedback:not(:empty) {
+  animation: cfFeedbackIn 0.28s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ── Shake animation on invalid submit ── */
+@keyframes cfShake {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-6px); }
+  30%, 60%, 90% { transform: translateX(6px); }
+}
+
+.cf-field.cf-shake .cf-input {
+  animation: cfShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* ── Subject quick-pick chips ── */
+.cf-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.6rem;
+}
+
+.cf-chip {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.76rem;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--gray-200);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 229, 200, 0.18);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
+  line-height: 1.4;
+}
+
+.cf-chip:hover {
+  background: rgba(0, 229, 200, 0.1);
+  border-color: var(--aqua);
+  color: var(--aqua);
+  transform: translateY(-1px);
+}
+
+.cf-chip.cf-chip-active {
+  background: linear-gradient(135deg, rgba(0, 229, 200, 0.18), rgba(0, 180, 216, 0.14));
+  border-color: var(--aqua);
+  color: var(--aqua);
+}
+
+/* ── Char counter ── */
+.cf-message-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.cf-char-counter {
+  font-size: 0.76rem;
+  color: var(--gray-400);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.25s ease;
+}
+
+.cf-char-counter.cf-counter-warn   { color: var(--sun); }
+.cf-char-counter.cf-counter-danger { color: #ff6b6b; }
+
+/* ── Submit row ── */
+.cf-submit-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Submit button — full width on mobile, auto on wider */
+.cf-submit-btn {
+  width: 100%;
+  justify-content: center;
+  gap: 0.55rem;
+  font-size: 1rem;
+  padding: 0.9rem 2.25rem;
+  border-radius: var(--radius-pill);
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease,
+    opacity 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* disabled / not-yet-valid state */
+.cf-submit-btn:disabled,
+.cf-submit-btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+  background: linear-gradient(135deg, rgba(0, 229, 200, 0.45), rgba(0, 180, 216, 0.45));
+}
+
+/* enabled hover */
+.cf-submit-btn:not(:disabled):hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 36px rgba(0, 229, 200, 0.45);
+}
+
+.cf-submit-btn:not(:disabled):active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+/* ── Loading spinner (inside button) ── */
+.cf-btn-idle,
+.cf-btn-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.cf-spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(5, 19, 31, 0.35);
+  border-top-color: var(--navy-deep);
+  border-radius: 50%;
+  animation: cfSpin 0.75s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes cfSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Privacy note ── */
+.cf-privacy-note {
+  font-size: 0.78rem;
+  color: var(--gray-400);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.cf-privacy-note i { color: var(--aqua); font-size: 0.82rem; }
+
+/* ── Bootstrap Toast overrides (contact form) ── */
+.cf-toast {
+  background: rgba(10, 31, 61, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 229, 200, 0.22) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  min-width: 280px;
+  max-width: 360px;
+}
+
+.cf-toast-body {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--off-white);
+  padding: 0.85rem 1rem;
+}
+
+.cf-toast-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* success variant */
+.cf-toast.cf-toast-success {
+  border-color: rgba(81, 207, 102, 0.30) !important;
+}
+.cf-toast.cf-toast-success .cf-toast-icon::before {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  content: '\f058';
+  color: #51cf66;
+}
+
+/* error variant */
+.cf-toast.cf-toast-error {
+  border-color: rgba(255, 107, 107, 0.30) !important;
+}
+.cf-toast.cf-toast-error .cf-toast-icon::before {
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  content: '\f057';
+  color: #ff6b6b;
+}
+
+/* ── Smooth appear for the toast container ── */
+.cf-toast.showing,
+.cf-toast.show {
+  animation: cfToastSlideIn 0.38s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes cfToastSlideIn {
+  from { opacity: 0; transform: translateX(20px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* ── Input focus animation (subtle glow pulse) ── */
+@keyframes cfFocusPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(0, 229, 200, 0.30), 0 4px 16px rgba(0,0,0,0.18); }
+  70%  { box-shadow: 0 0 0 6px rgba(0, 229, 200, 0.00), 0 4px 16px rgba(0,0,0,0.18); }
+  100% { box-shadow: 0 0 0 3px rgba(0, 229, 200, 0.14), 0 4px 16px rgba(0,0,0,0.18); }
+}
+
+.cf-input:focus {
+  animation: cfFocusPulse 0.55s ease forwards;
+}
+
+/* ── Success checkmark animation ── */
+@keyframes cfSuccessPop {
+  0%   { transform: translateY(-50%) scale(0.5); opacity: 0; }
+  60%  { transform: translateY(-50%) scale(1.2); }
+  100% { transform: translateY(-50%) scale(1);   opacity: 1; }
+}
+
+.cf-field.cf-valid .cf-status-icon {
+  animation: cfSuccessPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.cf-textarea-wrap.cf-valid .cf-status-textarea,
+.cf-field.cf-valid .cf-status-textarea {
+  animation: none; /* textarea status doesn't use translateY centering */
+  opacity: 1;
+}
+
+/* ============================================================
+   CONTACT FORM — Responsive Breakpoints
+   ============================================================ */
+
+/* ≥1400px — wide desktop */
+@media (min-width: 1400px) {
+  .cf-card { padding: 2.5rem; }
+  .cf-submit-btn { width: auto; min-width: 220px; }
+}
+
+/* ≥1200px — standard desktop */
+@media (min-width: 1200px) {
+  .cf-submit-btn { width: auto; min-width: 200px; }
+  .cf-submit-row { flex-direction: row; align-items: center; }
+  .cf-privacy-note { margin-left: 0.25rem; }
+}
+
+/* ≥992px — laptop */
+@media (min-width: 992px) {
+  .cf-chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+}
+
+/* ≤991px — tablet & below */
+@media (max-width: 991px) {
+  .cf-card { padding: 1.75rem; }
+  .cf-card-header { gap: 0.85rem; }
+  .cf-header-icon { width: 46px; height: 46px; font-size: 1.1rem; border-radius: 12px; }
+}
+
+/* ≤768px — large mobile / small tablet */
+@media (max-width: 768px) {
+  .cf-card { padding: 1.5rem; }
+  .cf-chip  { font-size: 0.74rem; padding: 0.28rem 0.7rem; }
+}
+
+/* ≤576px — typical mobile */
+@media (max-width: 576px) {
+  .cf-card { padding: 1.25rem; border-radius: 12px; }
+  .cf-card-header { padding-bottom: 1rem; margin-bottom: 1.25rem; }
+  .cf-header-icon { width: 42px; height: 42px; font-size: 1rem; border-radius: 10px; }
+  .cf-card-title  { font-size: 1.15rem; }
+
+  .cf-input {
+    font-size: 0.9rem;
+    padding-left: 2.65rem;
+    min-height: 52px;
+  }
+  .cf-label { left: 2.65rem; font-size: 0.9rem; }
+  .cf-input:focus ~ .cf-label,
+  .cf-input:not(:placeholder-shown) ~ .cf-label { font-size: 0.68rem; }
+  .cf-textarea:focus ~ .cf-label-textarea,
+  .cf-textarea:not(:placeholder-shown) ~ .cf-label-textarea { font-size: 0.68rem; }
+
+  .cf-submit-btn { padding: 0.85rem 1.5rem; font-size: 0.95rem; }
+
+  .cf-toast { min-width: 0; max-width: calc(100vw - 1.5rem); }
+
+  .cf-chips {
+    gap: 0.35rem;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: inline mandatory;
+    padding-bottom: 4px;
+  }
+  .cf-chip { scroll-snap-align: start; white-space: nowrap; }
+}
+
+/* ≤425px */
+@media (max-width: 425px) {
+  .cf-card { padding: 1rem; }
+  .cf-card-header { flex-direction: row; }
+  .cf-input-icon  { left: 0.85rem; }
+  .cf-input {
+    padding-left: 2.5rem;
+    padding-right: 2.4rem;
+  }
+  .cf-label { left: 2.5rem; }
+  .cf-char-counter { font-size: 0.72rem; }
+  .cf-feedback     { font-size: 0.74rem; }
+}
+
+/* ≤375px */
+@media (max-width: 375px) {
+  .cf-card { border-radius: 10px; }
+  .cf-input { min-height: 50px; font-size: 0.87rem; }
+  .cf-card-title { font-size: 1.05rem; }
+  .cf-submit-btn { font-size: 0.9rem; padding: 0.8rem 1.25rem; }
+}
+
+/* ≤320px */
+@media (max-width: 320px) {
+  .cf-card { padding: 0.85rem; }
+  .cf-header-icon { display: none; } /* save space at very narrow widths */
+  .cf-card-header { padding-bottom: 0.75rem; margin-bottom: 1rem; }
+  .cf-input { padding-left: 2.35rem; padding-right: 2.2rem; min-height: 48px; }
+  .cf-input-icon  { left: 0.7rem; font-size: 0.85rem; }
+  .cf-label { left: 2.35rem; }
+  .cf-spinner { width: 15px; height: 15px; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .cf-card,
+  .cf-input,
+  .cf-label,
+  .cf-feedback,
+  .cf-chip,
+  .cf-submit-btn,
+  .cf-status-icon,
+  .cf-section::before,
+  .cf-section::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
